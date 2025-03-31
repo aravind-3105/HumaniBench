@@ -12,6 +12,11 @@ from transformers import (
     GenerationConfig
 )
 
+# Set environment variables for caching
+os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
+os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
+
+
 def main():
     parser = ArgumentParser()
     parser.add_argument("--hf_token", type=str, required=True)
@@ -19,8 +24,6 @@ def main():
     parser.add_argument("--csv_file", type=str, required=True)
     parser.add_argument("--results_file", type=str, default="phi4_results.json")
     parser.add_argument("--image_folder", type=str, required=True)
-    parser.add_argument("--cache_dir", type=str, default="/projects/NMB-Plus/SR_Modeldir/cache/")
-
     args = parser.parse_args()
 
     # Log in to Hugging Face
@@ -30,7 +33,7 @@ def main():
     # Load Phi-4 multimodal components
     processor = AutoProcessor.from_pretrained(
         args.phi4_model,
-        cache_dir=args.cache_dir,
+        cache_dir=os.environ["HF_HOME"],
         trust_remote_code=True
     )
     
@@ -39,7 +42,7 @@ def main():
         device_map="auto",
         torch_dtype="auto",
         trust_remote_code=True,
-        cache_dir=args.cache_dir,
+        cache_dir=os.environ["HF_HOME"],
         _attn_implementation='eager'
     ).eval()
 

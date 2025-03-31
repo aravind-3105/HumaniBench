@@ -10,6 +10,12 @@ from huggingface_hub import login
 from transformers import AutoModelForCausalLM
 from deepseek_vl2.models import DeepseekVLV2Processor, DeepseekVLV2ForCausalLM
 
+# Set environment variables for caching
+os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
+os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
+
+
+
 def resize_image(img_path, max_size=(350, 350)):
     """Resize image to fit within the specified max size."""
     try:
@@ -71,9 +77,9 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load model
-    processor = DeepseekVLV2Processor.from_pretrained(args.model_path, cache_dir="/projects/NMB-Plus/SR_Modeldir/cache/")
+    processor = DeepseekVLV2Processor.from_pretrained(args.model_path, cache_dir=os.environ["HF_HOME"]).to(device)
     tokenizer = processor.tokenizer
-    model = DeepseekVLV2ForCausalLM.from_pretrained(args.model_path, cache_dir="/projects/NMB-Plus/SR_Modeldir/cache/").to(torch.bfloat16).to(device).eval()
+    model = DeepseekVLV2ForCausalLM.from_pretrained(args.model_path, cache_dir=os.environ["HF_HOME"]).to(torch.bfloat16).to(device).eval()
 
     # Load CSV data
     csv_captions = {}

@@ -64,9 +64,9 @@ def combine_json_data(final_dir, selected_file, base_file, output_file, language
 
 if __name__ == "__main__":
     final_dir = 'final_v2/'  # Directory containing language JSON files
-    selected_file_set = "/projects/NMB-Plus/E-VQA/source/eval5/QA_generation/OpenAI_Output/Eval2/final"
+    selected_file_set = "./data/OpenAI_Output/Eval2/final"
     selected_files = os.listdir(selected_file_set)
-    base_file = "/projects/NMB-Plus/E-VQA/data/eval5/Selected_QA_Eval2.json"  # English data file
+    base_file = "./data/Selected_QA_Eval2.json"  # English data file
 
     for selected_file in selected_files:
         language = selected_file.split('_')[1]  # Extract the language from the file name

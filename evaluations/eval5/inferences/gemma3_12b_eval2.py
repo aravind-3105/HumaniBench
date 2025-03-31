@@ -1,13 +1,17 @@
 import torch
 import json
 import os
-import re
 import time
-from argparse import ArgumentParser
 import logging
+from argparse import ArgumentParser
 from PIL import Image
+from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
-from transformers import AutoProcessor, AutoModelForImageTextToText, BitsAndBytesConfig, set_seed
+from transformers import AutoProcessor, Gemma3ForConditionalGeneration
+from transformers.image_utils import load_image
+from transformers.utils import logging as hf_logging
+from transformers.utils.versions import require_version
+from transformers import set_seed
 
 # Set a seed for reproducibility
 set_seed(45)
@@ -22,65 +26,40 @@ os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transfor
 MAX_NEW_TOKENS = 256
 
 # Model paths
-MODEL_DIR = "/model-weights/Llama-3.2-11B-Vision-Instruct/"  # Local model path
-HF_MODEL_ID = "meta-llama/Llama-3.2-11B-Vision-Instruct"       # Hugging Face Model ID
+HF_MODEL_ID = "google/gemma-3-12b-it"
+MODEL_DIR = "/model-weights/gemma-3-12b-it"
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def load_model(model_source="local", quantized=False):
+def load_model(model_source="local"):
     """
-    Load the Llama 3.2 Vision model and its processor.
+        Load the Gemma3 model from Hugging Face model hub or local path.
 
-    Args:
-        model_source (str): 'local' to load from a local directory; otherwise, load from Hugging Face.
-        quantized (bool): Whether to use 4-bit quantization for efficient memory usage.
+        Args:
+            model_source (str): Source of the model: 'local' or 'hf'
 
-    Returns:
-        tuple: (model, processor)
+        Returns:
+            model (Gemma3ForConditionalGeneration): The loaded model
+            processor (AutoProcessor): The processor for the model
     """
-    logger.info(f"Loading Llama 3.2 Vision model from {'local' if model_source == 'local' else 'Hugging Face'}...")
     model_path = MODEL_DIR if model_source == "local" else HF_MODEL_ID
+    logger.info(f"Loading Paligemma model from {model_path}...")
 
-    # Load processor
-    processor = AutoProcessor.from_pretrained(
+    # load the model
+    model = Gemma3ForConditionalGeneration.from_pretrained(
         model_path,
-        trust_remote_code=True,
-        cache_dir=os.environ["TRANSFORMERS_CACHE"]
-    )
+        device_map="auto",
+        cache_dir=os.environ["TRANSFORMERS_CACHE"],
+        torch_dtype=torch.bfloat16,
+    ).eval()
 
-    if quantized:
-        logger.info("Using 4-bit quantization for efficient memory usage.")
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.bfloat16
-        )
-        model = AutoModelForImageTextToText.from_pretrained(
-            model_path,
-            torch_dtype=torch.bfloat16,
-            quantization_config=bnb_config,
-            device_map="auto",
-            offload_folder=OFFLOAD_FOLDER,
-            cache_dir=os.environ["TRANSFORMERS_CACHE"]
-        )
-    else:
-        logger.info("Using full-precision model (FP16).")
-        model = AutoModelForImageTextToText.from_pretrained(
-            model_path,
-            torch_dtype=torch.float16,
-            device_map="auto",
-            offload_folder=OFFLOAD_FOLDER,
-            cache_dir=os.environ["TRANSFORMERS_CACHE"]
-        )
-
-    logger.info("Model loaded successfully.")
+    processor = AutoProcessor.from_pretrained(model_path, cache_dir=os.environ["TRANSFORMERS_CACHE"])
     return model, processor
 
-
+# Resize image
 def resize_image(img_path, max_size=(350, 350)):
     """
     Resize an image to fit within max_size while preserving its aspect ratio.
@@ -101,7 +80,8 @@ def resize_image(img_path, max_size=(350, 350)):
         return None
 
 
-def process_sample(model, processor, img_path, question, language, device):
+# Process a single image-question pair and generate an answer
+def process_sample(model, processor, img_path, question,language):
     """
     Process a single image-question pair and generate an answer.
 
@@ -122,83 +102,88 @@ def process_sample(model, processor, img_path, question, language, device):
         if image is None:
             return "Error: Could not process image"
 
-        user_prompt = (
-            f"Given question, answer given in {language} language  in the following format:"
-            f"Question:{question}"
-            f"Answer:<answer> in the context of the image in {language} language based on question."
-            f"Reasoning:<reasoning> in the context of the image in {language} language based on question."
-        )
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model.to(device)
+
+        # Construct user prompt
+        user_prompt = f"Given question, answer given in {language} language  in the following format :\
+                Question:{question}\
+                Answer:<answer> \
+                Reasoning:<reasoning> in the context of the image in {language} language."
 
         # Construct conversation prompt
         messages = [
             {
+                "role": "system",
+                "content": [{"type": "text", "text": "You are a helpful assistant following user's instructions."}]
+            },
+            {
                 "role": "user",
                 "content": [
-                    {"type": "image"},
+                    {"type": "image", "image": image},
                     {"type": "text", "text": user_prompt}
                 ]
             }
         ]
 
         # Apply chat template to get the input text
-        input_text = processor.apply_chat_template(messages, add_generation_prompt=True)
+        inputs = processor.apply_chat_template(
+            messages, add_generation_prompt=True, tokenize=True,
+            return_dict=True, return_tensors="pt"
+        ).to(model.device, dtype=torch.bfloat16)
+        input_len = inputs["input_ids"].shape[-1]
 
-        # Prepare inputs
-        inputs = processor(
-            images=image,
-            text=input_text,
-            add_special_tokens=False,
-            return_tensors="pt"
-        ).to(device)
+        # Generate answer
+        with torch.inference_mode():
+            generation = model.generate(**inputs, max_new_tokens=256, do_sample=False)
+            generation = generation[0][input_len:]
 
-        # Generate response
-        with torch.no_grad():
-            output = model.generate(
-                **inputs,
-                max_new_tokens=MAX_NEW_TOKENS,
-                do_sample=False,
-            )
+        # Decode the generated answer and remove special tokens
+        decoded = processor.decode(generation, skip_special_tokens=True)
+        return decoded if decoded != "" else "No answer generated"
 
-        # Decode the output and extract the assistant response
-        predicted_answer = processor.decode(output[0], skip_special_tokens=True)
-        predicted_answer = predicted_answer[predicted_answer.find("assistant") + 9:]
-        return predicted_answer if predicted_answer else "No answer generated"
 
     except Exception as e:
         logger.error(f"Error processing {img_path}: {e}")
         return "Error"
 
 
+
+# Main function to process dataset
 def evaluate(model, processor, dataset, image_folder, save_path, language):
     """
-    Evaluate the model on a dataset of image-question pairs and save the results.
+    Process the dataset and generate answers for each question.
 
     Args:
         model: The loaded language model.
         processor: The associated processor.
-        dataset (list): List of data samples.
-        image_folder (str): Directory containing images.
-        save_path (str): File path to save final results.
-        language (str): Language of the questions and answers.
-        mode (str): Processing mode ('single' or 'batch').
+        dataset (list): The dataset to process.
+        image_folder (str): Path to the image folder.
+        save_path (str): Path to save the results.
+        language (str): Language in which the answer should be generated.
 
-    Returns:
+    Returns:    
         None
     """
     results = []
-    logger.info("Starting evaluation...")
+    logger.info(f"Starting evaluation...")
+    intermediate_results_path = save_path.replace(".json", "_intermediate.json")
     prev_path = ""
+
 
     with tqdm(total=len(dataset), unit="sample") as pbar:
         for i, data in enumerate(dataset):
+            # print(data)
             img_path = os.path.join(image_folder, f"{data['ID']}.jpg")
+
             if not os.path.exists(img_path):
                 logger.warning(f"Image not found for ID {data['ID']} at {img_path}")
                 continue
 
             q_id = f"Question({language})"
             a_id = f"Answer({language})"
-            answer = process_sample(model, processor, img_path, data[q_id], language, device)
+            answer = process_sample(model, processor, img_path, data[q_id], language)
             results.append({
                 "ID": data["ID"],
                 "Question": data[q_id],
@@ -207,26 +192,27 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
                 "Attribute": data["Attribute"],
             })
 
-            # Save intermediate results every 10 samples
+            # Save intermediate results every 50
             if i % 10 == 0:
-                intermediate_results_path = save_path.replace(
-                    ".json", f"_intermediate_{i}_{time.strftime('%Y%m%d_%H%M%S')}.json"
-                )
+                intermediate_results_path = save_path.replace(".json", f"_intermediate_{i}_{time.strftime('%Y%m%d_%H%M%S')}.json")
                 with open(intermediate_results_path, "w") as f:
-                    json.dump(results, f, indent=4, default=str)
+                    json.dump(results, f, indent=4, default=str, ensure_ascii=False)
                 if prev_path != "":
-                    os.remove(prev_path)
+                    os.remove(prev_path)  
                 logger.info(f"Intermediate results saved to {intermediate_results_path} and deleted {prev_path}.")
                 prev_path = intermediate_results_path
 
             pbar.update(1)
 
-    # Save final results to JSON
+    # Save final results to JSON file
     with open(save_path, "w") as f:
         json.dump(results, f, indent=4, default=str)
+    
     logger.info(f"Results saved to {save_path}.")
 
 
+
+# Main execution
 if __name__ == "__main__":
     start_time = time.time()
 
@@ -242,7 +228,7 @@ if __name__ == "__main__":
                         default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="results/results_Llama_Eval2_French.json",
+                        default="results/results_gemma3_12b_Eval2_French.json",
                         help="Output file to save results")
     parser.add_argument("--model_source", type=str,
                         default="local",
@@ -250,31 +236,25 @@ if __name__ == "__main__":
     parser.add_argument("--num_samples", type=int,
                         default=0,
                         help="Number of samples to process")
-    parser.add_argument("--quantized", type=bool,
-                        default=False,
-                        help="Use quantized model")
     args = parser.parse_args()
-
+    
     # Define device
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    device = torch.device(args.device if torch.cuda.is_available() else 'cpu')
 
-    # Determine model source (local vs Hugging Face)
-    model_source = "huggingface" if args.model_source == "hf" else "local"
-    logger.info(f"Model source: {model_source}")
-
-    # Load model and processor
-    model, processor = load_model(model_source, quantized=args.quantized)
-    model.to(device)
-
-    # Determine language from dataset filename (assumes language is after the last '_' and before '.json')
+    # Identify language
     language = args.dataset.split("_")[-1].split(".")[0]
     logger.info(f"Processing dataset in {language} language...")
+
+    # Load model
+    model, processor = load_model(args.model_source)
+    model.to(device)
 
     # Load dataset
     with open(args.dataset, "r") as f:
         dataset = json.load(f)
     if args.num_samples > 0:
         dataset = dataset[args.num_samples:]
+
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
     # Run evaluation

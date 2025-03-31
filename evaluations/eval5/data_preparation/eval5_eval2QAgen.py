@@ -203,7 +203,7 @@ def parse_args():
     parser.add_argument("--data_path", type=str, required=True, help="Path to JSON file with input data")
     parser.add_argument("--language", type=str, default="Portuguese", help="Language for the generated questions")
     parser.add_argument("--openai_api_key", type=str, required=True, help="Your OpenAI API key")
-    parser.add_argument("--image_folder", type=str, default="/projects/NMB-Plus/E-VQA/data/processed_images", help="Path to the folder containing images")
+    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to the folder containing images")
     return parser.parse_args()
 
 if __name__ == "__main__":

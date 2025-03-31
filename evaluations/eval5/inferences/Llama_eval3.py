@@ -358,6 +358,3 @@ if __name__ == "__main__":
     # Run evaluation
     evaluate(model, processor, dataset, args.image_folder, args.save_path, language)
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
-
-
-# python3 Llama_eval2.py --model_source hf --dataset /projects/NMB-Plus/E-VQA/data/eval5/eval2/Eval2_French.json --save_path results/results_Llama_French_Eval2.json
