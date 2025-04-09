@@ -8,6 +8,7 @@ from datasets import load_dataset
 
 # Load dataset
 dataset = load_dataset("vector-institute/VLDBench")
+CACHE_DIR = "" # Specify your cache directory here
 input()
 # Load selected samples
 with open("unique_selected_samples.json", "r") as f:
@@ -15,10 +16,10 @@ with open("unique_selected_samples.json", "r") as f:
 
 # Load model and processor
 model_path = "deepseek-ai/deepseek-vl2-small"
-vl_chat_processor = DeepseekVLV2Processor.from_pretrained(model_path, cache_dir="/scratch/ssd004/scratch/vkhazaie/")
+vl_chat_processor = DeepseekVLV2Processor.from_pretrained(model_path, cache_dir=CACHE_DIR)
 tokenizer = vl_chat_processor.tokenizer
 
-vl_gpt = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, cache_dir="/scratch/ssd004/scratch/vkhazaie/")
+vl_gpt = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, cache_dir=CACHE_DIR)
 vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
 
 # Check if results file exists

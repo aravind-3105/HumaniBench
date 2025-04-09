@@ -58,6 +58,7 @@ def main():
     parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace token")
     parser.add_argument("--model_path", type=str, default="deepseek-ai/deepseek-vl2-tiny", help="Hugging Face model ID or local path")
     parser.add_argument("--csv_file", type=str, required=True, help="CSV file with image data")
+    parser.add_argument("--results_folder", type=str, default="./results", help="Folder to save results")
     parser.add_argument("--results_file", type=str, default="caption_results_llama.json", help="Output JSON file")
     parser.add_argument("--image_folder", type=str, required=True, help="Folder containing images")
     parser.add_argument("--model_source", type=str, default="hf", help="'local' or 'hf'")
@@ -67,6 +68,11 @@ def main():
     # Log in to Hugging Face if using remote model.
     login(token=args.hf_token)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Create results folder if it doesn't exist.
+    if not os.path.exists(args.results_folder):
+        os.makedirs(args.results_folder, exist_ok=True)
+        print(f"Created results folder: {args.results_folder}")
     
     # Load the processor and model.
     processor = AutoProcessor.from_pretrained(args.model_path, trust_remote_code=True)
@@ -148,6 +154,7 @@ def main():
         results.append(result_entry)
         
         # Save intermediate progress.
+        results_file_path = os.path.join(args.results_folder, args.results_file)
         with open(args.results_file, "w") as f:
             json.dump(results, f, indent=4)
     

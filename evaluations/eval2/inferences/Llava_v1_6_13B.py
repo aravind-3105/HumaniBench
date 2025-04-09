@@ -16,8 +16,9 @@ HF_MODEL_ID = "llava-hf/llava-v1.6-vicuna-13b-hf"
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-os.environ["HF_HOME"] = "/projects/NMB-Plus/E-VQA/model-weights/huggingface_cache"
-os.environ["TRANSFORMERS_CACHE"] = "/projects/NMB-Plus/E-VQA/model-weights/huggingface_cache"
+os.environ["HF_HOME"] = ""
+os.environ["TRANSFORMERS_CACHE"] = ""
+offload_folder = ""
 
 def load_model(model_source="local"):
     """Load and return the Llava model and processor."""
@@ -120,10 +121,10 @@ def evaluate(model, processor, dataset, image_folder, save_path):
 if __name__ == "__main__":
     start_time = time.time()
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="/projects/NMB-Plus/E-VQA/data/eval2/QA_Eval2.json", help="Path to dataset")
+    parser.add_argument("--dataset", type=str, default="./data/eval2/QA_Eval2.json", help="Path to dataset")
     parser.add_argument("--image_folder", type=str, default="/projects/NMB-Plus/E-VQA/data/processed_images", help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
-    parser.add_argument("--save_path", type=str, default="results/results_Llava_v1_6_13B.json", help="Output file to save results")
+    parser.add_argument("--save_path", type=str, default="./results/results_Llava_v1_6_13B.json", help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="local", help="Model source: 'local' or 'hf'")
     args = parser.parse_args()
     

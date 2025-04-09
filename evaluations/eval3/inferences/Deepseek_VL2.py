@@ -14,8 +14,8 @@ from tqdm import tqdm
 MAX_NEW_TOKENS = 150
 
 # Cache Directory Setup
-os.environ["HF_HOME"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
-os.environ["TRANSFORMERS_CACHE"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
+os.environ["HF_HOME"] = ""
+os.environ["TRANSFORMERS_CACHE"] = ""
 
 # Model Directory (Hugging Face Model ID)
 HF_MODEL_ID = "deepseek-ai/deepseek-vl2-small"

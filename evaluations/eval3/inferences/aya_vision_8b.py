@@ -35,8 +35,11 @@ logger = logging.getLogger(__name__)
 # Environment variable paths (set these in your environment or .env file)
 MODEL_DIR = os.getenv("MODEL_DIR", "/model-weights/aya-vision-8b")  # Local model path
 HF_MODEL_ID = os.getenv("HF_MODEL_ID", "CohereForAI/aya-vision-8b")  # Hugging Face Model ID
-OFFLOAD_FOLDER = os.getenv("OFFLOAD_FOLDER", "/scratch/ssd004/scratch/mchettiar/offload")
-CACHE_DIR = os.getenv("TRANSFORMERS_CACHE", "/scratch/ssd004/scratch/mchettiar/huggingface_cache")
+
+# Offload and cache directories to be set in the environment
+OFFLOAD_FOLDER = os.getenv("OFFLOAD_FOLDER", "")
+CACHE_DIR = os.getenv("TRANSFORMERS_CACHE", "")
+offload_folder = ""
 
 # Resize image function
 def resize_image(img_path, max_size=(350, 350)):

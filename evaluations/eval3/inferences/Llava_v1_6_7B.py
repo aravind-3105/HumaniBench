@@ -16,7 +16,7 @@ set_seed(45)
 MAX_NEW_TOKENS = 200
 MODEL_DIR = "/model-weights/llava-v1.6-vicuna-7b-hf"
 HF_MODEL_ID = "llava-hf/llava-v1.6-vicuna-7b-hf"
-CACHE_DIR = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
+CACHE_DIR = ""
 
 # Environment variables for caching
 os.environ["HF_HOME"] = CACHE_DIR
@@ -177,10 +177,10 @@ if __name__ == "__main__":
 
     # Command-line arguments
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="/projects/NMB-Plus/E-VQA/data/eval3/QA_Eval3.json", help="Path to dataset")
-    parser.add_argument("--image_folder", type=str, default="/projects/NMB-Plus/E-VQA/data/processed_images", help="Path to image folder")
+    parser.add_argument("--dataset", type=str, default="./data/eval3/QA_Eval3.json", help="Path to dataset")
+    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
-    parser.add_argument("--save_path", type=str, default="results/results_Llava_v1_6_7B.json", help="Output file to save results")
+    parser.add_argument("--save_path", type=str, default="./results/results_Llava_v1_6_7B.json", help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="hf", help="Model source: 'local' or 'hf'")
     parser.add_argument("--mode", type=str, default="single", choices=["single", "batch"], help="Single or batch processing")
 

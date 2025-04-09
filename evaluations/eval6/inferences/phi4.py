@@ -22,6 +22,8 @@ def main():
     parser.add_argument("--hf_token", type=str, required=True)
     parser.add_argument("--phi4_model", type=str, default="microsoft/Phi-4-multimodal-instruct")
     parser.add_argument("--csv_file", type=str, required=True)
+    parser.add_argument("--results_folder", type=str, default="./results")
+    os.makedirs(args.results_folder, exist_ok=True)
     parser.add_argument("--results_file", type=str, default="phi4_results.json")
     parser.add_argument("--image_folder", type=str, required=True)
     args = parser.parse_args()
@@ -117,7 +119,8 @@ def main():
         results.append(result_entry)
 
         # Save after each image to prevent data loss
-        with open(args.results_file, "w") as f:
+        results_file_path = os.path.join(args.results_folder, args.results_file)
+        with open(results_file_path, "w") as f:
             json.dump(results, f, indent=4)
 
     print(f"Completed processing {len(results)} images")

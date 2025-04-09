@@ -99,9 +99,9 @@ def process_all_models(result_folder, eval3_dataset):
     return results_df
 
 # Example usage
-parent_folder = "/projects/NMB-Plus/E-VQA/results"
+parent_folder = "./results"
 result_folder = os.path.join(parent_folder, "eval3")
-eval3_dataset = "/projects/NMB-Plus/E-VQA/data/eval3/QA_Eval3.json"
+eval3_dataset = "./data/eval3/QA_Eval3.json"
 results_df = process_all_models(result_folder, eval3_dataset)
 
 # Save results to CSV

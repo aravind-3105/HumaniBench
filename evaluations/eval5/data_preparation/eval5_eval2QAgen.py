@@ -104,8 +104,6 @@ def generate_batch_json_files(data, language, folder):
                     "role": "user",
                     "content": [
                         {"type": "text", "text": prompt},
-                        # Optionally include the image by uncommenting the next line:
-                        # {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
                     ]
                 }
             ]
@@ -128,13 +126,13 @@ def generate_batch_json_files(data, language, folder):
             failed.append(item["ID"])
 
     # Create output directory for batch files
-    os.makedirs("batch_files", exist_ok=True)
+    os.makedirs(f"batch_files_{language}", exist_ok=True)
 
     # Split batch into sub-batches (each of maximum size BATCH_SIZE)
     sub_batches = [batch[i:i + BATCH_SIZE] for i in range(0, len(batch), BATCH_SIZE)]
     batch_files = []
     for idx, sub_batch in enumerate(sub_batches):
-        batch_filename = f"batch_files/batch_{idx}.jsonl"
+        batch_filename = f"batch_files_{language}/batch_{idx}.jsonl"
         with open(batch_filename, "w") as f:
             for entry in sub_batch:
                 f.write(json.dumps(entry) + "\n")
@@ -142,7 +140,7 @@ def generate_batch_json_files(data, language, folder):
         print(f"Saved batch {idx} with {len(sub_batch)} requests to {batch_filename}")
 
     # Save failed item IDs
-    with open("batch_files/failed_requests.json", "w") as f:
+    with open(f"batch_files_{language}/failed_requests.json", "w") as f:
         json.dump(failed, f, indent=2)
     print(f"Generated {len(batch_files)} batch JSONL files.")
 

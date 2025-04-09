@@ -19,9 +19,12 @@ MODEL_DIR = os.getenv("MODEL_DIR", "/model-weights/cogvlm2-llama3-chat-19B/")  #
 HF_MODEL_ID = os.getenv("HF_MODEL_ID", "THUDM/cogvlm2-llama3-chat-19B")  # Default Hugging Face Model ID
 
 # Cache and offload folders from environment variables with default values
-os.environ["HF_HOME"] = os.getenv("HF_HOME", "/scratch/ssd004/scratch/mchettiar/huggingface_cache")
-os.environ["HF_HUB_TMP"] = os.getenv("HF_HUB_TMP", "/scratch/ssd004/scratch/mchettiar/huggingface_cache")
-os.environ["TRANSFORMERS_CACHE"] = os.getenv("TRANSFORMERS_CACHE", "/scratch/ssd004/scratch/mchettiar/huggingface_cache")
+
+os.environ["HF_HOME"] = os.getenv("HF_HOME", "")
+os.environ["HF_HUB_TMP"] = os.getenv("HF_HUB_TMP", "")
+os.environ["TRANSFORMERS_CACHE"] = os.getenv("TRANSFORMERS_CACHE", "")
+
+
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)

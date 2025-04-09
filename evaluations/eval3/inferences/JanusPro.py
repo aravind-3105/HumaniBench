@@ -9,14 +9,13 @@ import logging
 from PIL import Image
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, set_seed
-from janus.models import MultiModalityCausalLM, VLChatProcessor
-from janus.utils.io import load_pil_images
+from janus.models import VLChatProcessor
 
 set_seed(45)
 
 # User Keys
-os.environ["HF_HOME"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
-os.environ["TRANSFORMERS_CACHE"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
+os.environ["HF_HOME"] = ""
+os.environ["TRANSFORMERS_CACHE"] = ""
 
 # Parameters
 MAX_NEW_TOKENS = 125

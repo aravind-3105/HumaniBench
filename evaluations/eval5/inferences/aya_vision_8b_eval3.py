@@ -40,20 +40,20 @@ def load_model(model_source="local"):
     model_path = MODEL_DIR if model_source == "local" else HF_MODEL_ID
 
     # Ensure cache directories are set
-    os.environ["HF_HOME"] = HF_HOME
-    os.environ["TRANSFORMERS_CACHE"] = TRANSFORMERS_CACHE
+    os.environ["HF_HOME"] = ""
+    os.environ["TRANSFORMERS_CACHE"] = ""
 
     model = AutoModelForImageTextToText.from_pretrained(
         model_path,
         device_map="auto",
         offload_folder="/scratch/ssd004/scratch/aravindn/offload",
         trust_remote_code=True,
-        cache_dir=HF_HOME
+        cache_dir=os.environ["TRANSFORMERS_CACHE"]
     )
     processor = AutoProcessor.from_pretrained(
         model_path,
         trust_remote_code=True,
-        cache_dir=TRANSFORMERS_CACHE
+        cache_dir=os.environ["TRANSFORMERS_CACHE"]
     )
     return model, processor
 
@@ -120,21 +120,18 @@ def extract_answer_and_reason(text):
 
 def process_sample(model, processor, img_path, question, device, language):
     """
-    Process a single image-question pair and generate a response.
-
-    The function resizes the image, encodes it as a base64 data URL, constructs the prompt,
-    and then generates a response using the model.
+    Process an image-question pair and generate a response.
 
     Args:
-        model: The loaded model.
-        processor: The associated processor.
+        model: Loaded model.
+        processor: Associated processor.
         img_path (str): Path to the image file.
-        question (str): The question to be answered.
-        device: Torch device to run the model on.
-        language (str): Language for the prompt.
+        question (str): Question text.
+        device: Torch device.
+        language (str): Prompt language.
 
     Returns:
-        str: The generated answer, or an error message.
+        str: Generated response or an error message.
     """
     try:
         # Resize the image
@@ -296,16 +293,16 @@ if __name__ == "__main__":
     # Command-line arguments
     parser = ArgumentParser()
     parser.add_argument("--dataset", type=str,
-                        default="/projects/NMB-Plus/E-VQA/data/eval5/eval3/Eval3_French.json",
+                        default="./data/eval5/eval3/Eval3_French.json",
                         help="Path to dataset")
     parser.add_argument("--image_folder", type=str,
-                        default="/projects/NMB-Plus/E-VQA/data/processed_images",
+                        default="./data/processed_images",
                         help="Path to image folder")
     parser.add_argument("--device", type=str,
                         default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="results/results_Aya_Vision_8B_Eval3_French.json",
+                        default="./results/results_Aya_Vision_8B_Eval3_French.json",
                         help="Output file to save results")
     parser.add_argument("--model_source", type=str,
                         default="local",

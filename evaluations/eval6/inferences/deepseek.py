@@ -69,12 +69,17 @@ def main():
     parser.add_argument("--model_path", type=str, default="deepseek-ai/deepseek-vl2-tiny")
     parser.add_argument("--csv_file", type=str, required=True, help="Path to combined.csv")
     parser.add_argument("--results_file", type=str, default="deepseek_results.json", help="Output JSON file")
+    parser.add_argument("--results_folder", type=str, default="./results", help="Folder to save results")
     parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
     args = parser.parse_args()
 
     # Log in to HuggingFace
     login(token=args.hf_token)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Check if results folder exists, if not create it
+    if not os.path.exists(args.results_folder):
+        os.makedirs(args.results_folder)
 
     # Load model
     processor = DeepseekVLV2Processor.from_pretrained(args.model_path, cache_dir=os.environ["HF_HOME"]).to(device)
@@ -134,7 +139,8 @@ def main():
         results.append(result_entry)
 
         # Save progress incrementally
-        with open(args.results_file, "w") as f:
+        results_file_path = os.path.join(args.results_folder, args.results_file)
+        with open(results_file_path, "w") as f:
             json.dump(results, f, indent=4)
 
     print(f"Processed {len(results)} images.")

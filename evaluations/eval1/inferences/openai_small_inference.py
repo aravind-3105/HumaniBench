@@ -2,8 +2,6 @@ import torch
 import os
 import json
 from transformers import AutoModelForCausalLM
-#from deepseek_vl2.models import DeepseekVLV2Processor, DeepseekVLV2ForCausalLM
-#from deepseek_vl2.utils.io import load_pil_images
 from datasets import load_dataset
 from openai import OpenAI 
 import os

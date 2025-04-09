@@ -151,12 +151,12 @@ def main():
             continue
 
         # Parse attributes (allow comma-separated string or list)
-        
         attributes = sample["attributes"]
         '''
         if isinstance(attributes, str):
             attributes = [attr.strip() for attr in attributes.split(",")]
         '''
+
         # Find the corresponding dataset sample in the 'train' split (adjust if needed)
         dataset_sample = sample
         if dataset_sample is None:
@@ -181,12 +181,6 @@ def main():
 
                 # For every question in the category
                 for question in questions[version][category]:
-                    # Build a conversation prompt; the image placeholder should be recognized by your processor/model.
-                    # conversation = [
-                    #     {"role": "<|User|>", "content": f"<image_placeholder>\n{question}", "images": [image]},
-                    #     {"role": "<|Assistant|>", "content": ""}
-                    # ]
-
                     prompt = [
                             {"role": "user", "content": [
                                 {"type": "image"},

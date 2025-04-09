@@ -1,7 +1,7 @@
 import os
 import json
 
-def combine_json_data(final_dir, selected_file, base_file, output_file, language):
+def combine_json_data(output_dir, selected_file, base_file, output_file, language):
     """
     Combine language-specific JSON data with base English JSON data.
 
@@ -11,7 +11,7 @@ def combine_json_data(final_dir, selected_file, base_file, output_file, language
     The combined data is saved to an output file.
 
     Args:
-        final_dir (str): Directory containing language JSON files (not used in this function).
+        output_dir (str): Directory containing language JSON files (not used in this function).
         selected_file (str): Path to the language-specific JSON file.
         base_file (str): Path to the base English JSON file.
         output_file (str): Path to save the combined output JSON file.
@@ -66,13 +66,13 @@ def combine_json_data(final_dir, selected_file, base_file, output_file, language
     print(f"Combined data saved to {output_file}")
 
 # Example usage
-final_dir = 'final_v2/'  # Directory containing language JSON files (e.g., Bengali, etc.)
-selected_file_set = "./dat/OpenAI_Output/Eval3/final"
-selected_files = os.listdir(selected_file_set)
+output_dir = 'final_v2/'  # Directory containing language JSON files (e.g., Bengali, etc.)
+input_folder = "./dat/OpenAI_Output/Eval3/final"
+input_files = os.listdir(input_folder)
 base_file = "./data/Selected_QA_Eval3.json"  # English data file
 
-for selected_file in selected_files:
+for selected_file in input_files:
     language = selected_file.split('_')[1]  # Extract the language from the file name
-    selected_file_path = os.path.join(selected_file_set, selected_file)
-    output_file = f'final_v2/Eval3_{language}_combined.json'  # File to save the combined result
-    combine_json_data(final_dir, selected_file_path, base_file, output_file, language)
+    selected_file_path = os.path.join(input_folder, selected_file)
+    output_file = f'{output_dir}/Eval3_{language}_combined.json'  # File to save the combined result
+    combine_json_data(output_dir, selected_file_path, base_file, output_file, language)

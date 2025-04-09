@@ -17,7 +17,7 @@ HF_MODEL_ID = "meta-llama/Llama-3.2-11B-Vision-Instruct"  # Hugging Face Model I
 
 # Parameters
 MAX_NEW_TOKENS = 120
-OFFLOAD_FOLDER = "/scratch/ssd004/scratch/mchettiar/offload"
+OFFLOAD_FOLDER = ""  # Offload folder for model weights
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)

@@ -212,16 +212,16 @@ if __name__ == "__main__":
     # Command-line arguments
     parser = ArgumentParser()
     parser.add_argument("--dataset", type=str,
-                        default="/projects/NMB-Plus/E-VQA/data/eval5/eval2/Eval2_French.json",
+                        default="./data/eval5/eval2/Eval2_French.json",
                         help="Path to dataset")
     parser.add_argument("--image_folder", type=str,
-                        default="/projects/NMB-Plus/E-VQA/data/processed_images",
+                        default="./data/processed_images",
                         help="Path to image folder")
     parser.add_argument("--device", type=str,
                         default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="results/results_Aya_Vision_8B_Eval2_French50.json",
+                        default="./results/results_Aya_Vision_8B_Eval2_French50.json",
                         help="Output file to save results")
     parser.add_argument("--model_source", type=str,
                         default="local",

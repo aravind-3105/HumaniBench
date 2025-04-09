@@ -23,8 +23,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Set cache directories
-os.environ["HF_HOME"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
-os.environ["TRANSFORMERS_CACHE"] = "/scratch/ssd004/scratch/mchettiar/huggingface_cache"
+os.environ["HF_HOME"] = ""
+os.environ["TRANSFORMERS_CACHE"] = ""
 
 # Prompt template for the task
 PROMPT = """Answer the question using one of the given choices based on the image.

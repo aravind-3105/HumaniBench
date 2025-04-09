@@ -178,12 +178,6 @@ def main():
 
                 # For every question in the category
                 for question in questions[version][category]:
-                    # Build a conversation prompt; the image placeholder should be recognized by your processor/model.
-                    # conversation = [
-                    #     {"role": "<|User|>", "content": f"<image_placeholder>\n{question}", "images": [image]},
-                    #     {"role": "<|Assistant|>", "content": ""}
-                    # ]
-
                     prompt = [
                             {"role": "user", "content": [
                                 {"type": "image"},
@@ -202,24 +196,9 @@ def main():
                             add_special_tokens=False,
                             return_tensors="pt"
                         ).to(device)
-                    # inputs = processor(conversations=prompt, images=[image], force_batchify=True)
-                    # inputs = inputs.to(device)
-
-                    # Prepare the inputs embeddings (if required by your model)
-                    # inputs_embeds = model.prepare_inputs_embeds(**inputs)
 
                     # Generate the answer
                     output = model.generate(**inputs, max_new_tokens=512, temperature=0.7, top_p=0.9)
-                    # outputs = model.generate(
-                    #     inputs_embeds=inputs_embeds,
-                    #     attention_mask=inputs.attention_mask,
-                    #     pad_token_id=processor.pad_token_id,
-                    #     bos_token_id=processor.bos_token_id,
-                    #     eos_token_id=processor.eos_token_id,
-                    #     max_new_tokens=512,
-                    #     do_sample=False,
-                    #     use_cache=True,
-                    # )
 
                     answer = processor.decode(output[0], skip_special_tokens=True)
                     sample_answers["answers"][version][category].append(answer)

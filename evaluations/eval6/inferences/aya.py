@@ -15,13 +15,16 @@ def main():
     parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace authentication token")
     parser.add_argument("--model_path", type=str, default="CohereForAI/aya-vision-8b", help="Model ID for Aya-Vision")
     parser.add_argument("--csv_file", type=str, required=True, help="Path to your combined.csv")
-    parser.add_argument("--results_file", type=str, default="caption_results.json", help="Output JSON file")
+    parser.add_argument("--results_file", type=str, default="./results/caption_results.json", help="Output JSON file")
     parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
     args = parser.parse_args()
 
     # Log in to Hugging Face
     login(token=args.hf_token)
     device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    # Make results directory if it doesn't exist
+    os.makedirs(os.path.dirname(args.results_file), exist_ok=True)
 
     # Load CSV data and create automatic selected samples
     csv_captions = {}

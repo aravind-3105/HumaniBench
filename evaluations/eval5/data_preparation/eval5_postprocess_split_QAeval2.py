@@ -55,22 +55,17 @@ LANGUAGE_CONFIG = {
 
 def process_language(input_file, output_file, language):
     """
-    Process an input JSON file to extract and clean question/answer pairs for a given language.
-    
-    This function loads the data from input_file (a JSON file containing a list of entries).
-    Each entry should have a "Content" (or "content") field. It attempts to extract the question
-    and answer by first splitting on the common markers "Question" and "Answer". Then it applies 
-    language-specific cleaning (such as removing a pattern like "(in Urdu)") and, if extraction 
-    fails, uses alternative markers defined in LANGUAGE_CONFIG.
-    
-    Finally, it cleans extra punctuation and whitespace before saving the processed entries to
-    output_file.
-    
+    Extract and clean question/answer pairs from a JSON file for a specified language.
+
+    Loads data from input_file, processes "Content" or "content" fields to extract questions 
+    and answers using markers ("Question", "Answer") and language-specific rules from 
+    LANGUAGE_CONFIG, and saves the cleaned data to output_file.
+
     Args:
         input_file (str): Path to the input JSON file.
         output_file (str): Path to the output JSON file.
-        language (str): Target language name (e.g. "Urdu", "Tamil", "Spanish", etc.).
-    
+        language (str): Target language (e.g., "Urdu", "Spanish").
+
     Returns:
         None
     """
@@ -152,7 +147,6 @@ def process_language(input_file, output_file, language):
 
 # Example usage:
 if __name__ == "__main__":
-    # For demonstration, you could process one file per language.
     # Adjust the filenames as needed.
     language_files = {
         "Urdu": ("results_Urdu_processed.json", "results_Urdu_processed_output.json"),

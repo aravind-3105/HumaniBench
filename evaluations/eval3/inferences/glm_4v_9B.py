@@ -76,14 +76,14 @@ def load_model(model_source="hf"):
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
         trust_remote_code=True,
-        cache_dir=os.getenv("TRANSFORMERS_CACHE", "/scratch/ssd004/scratch/mchettiar/huggingface_cache"),
+        cache_dir=os.getenv("TRANSFORMERS_CACHE", ""),
         torch_dtype='auto',
         device_map=device
     ).eval()
 
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
-        cache_dir=os.getenv("TRANSFORMERS_CACHE", "/scratch/ssd004/scratch/mchettiar/huggingface_cache"),
+        cache_dir=os.getenv("TRANSFORMERS_CACHE", ""),
         torch_dtype=torch.bfloat16,
         low_cpu_mem_usage=True,
         trust_remote_code=True
@@ -91,7 +91,7 @@ def load_model(model_source="hf"):
 
     tokenizer = AutoTokenizer.from_pretrained(model_path, 
                                               trust_remote_code=True,
-                                              cache_dir=os.getenv("TRANSFORMERS_CACHE", "/scratch/ssd004/scratch/mchettiar/huggingface_cache"))
+                                              cache_dir=os.getenv("TRANSFORMERS_CACHE", ""))
 
     return model, tokenizer
 

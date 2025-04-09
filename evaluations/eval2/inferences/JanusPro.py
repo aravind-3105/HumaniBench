@@ -21,8 +21,9 @@ HF_MODEL_ID = "deepseek-ai/Janus-Pro-7B"       # Hugging Face Model ID
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-os.environ["HF_HOME"] = "/scratch/ssd004/scratch/aravindn/huggingface_cache"
-os.environ["TRANSFORMERS_CACHE"] = "/scratch/ssd004/scratch/aravindn/huggingface_cache"
+os.environ["HF_HOME"] = ""
+os.environ["TRANSFORMERS_CACHE"] = ""
+offload_folder = ""
 
 def load_model(model_source="local"):
     """Load and return the model, tokenizer, and processor."""
@@ -151,10 +152,10 @@ def evaluate(model, tokenizer, processor, dataset, image_folder, device, save_pa
 if __name__ == "__main__":
     start_time = time.time()
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="/projects/NMB-Plus/E-VQA/data/eval2/QA_Eval2.json", help="Path to dataset")
-    parser.add_argument("--image_folder", type=str, default="/projects/NMB-Plus/E-VQA/data/processed_images", help="Path to image folder")
+    parser.add_argument("--dataset", type=str, default="./data/eval2/QA_Eval2.json", help="Path to dataset")
+    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
-    parser.add_argument("--save_path", type=str, default="results/results_Janus_Pro.json", help="Output file to save results")
+    parser.add_argument("--save_path", type=str, default="./results/results_Janus_Pro.json", help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="hf", help="Model source: 'local' or 'hf'")
     args = parser.parse_args()
     
