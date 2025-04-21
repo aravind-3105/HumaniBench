@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<meta property='og:title' content='VLDBench: Vision Language Models Disinformation Detection Benchmark' />
+<meta property='og:image' content='' />
+<meta property='og:description' content='' />
+<meta property='og:url' content='https://github.com/' />
+<meta property='og:image:width' content='1200' />
+<meta property='og:image:height' content='663' />
+<!-- TYPE BELOW IS PROBABLY: 'website' or 'article' or look on https://ogp.me/#types -->
+<meta property="og:type" content='website' />
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9VZKE74FPW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-9VZKE74FPW');
+  </script>
+  <meta charset="utf-8">
+  <meta name="description" content="VLDBench: Vision Language Models Disinformation Detection Benchmark">
+  <meta name="keywords" content="Disinformation Detection Benchmark">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VLDBench: Vision Language Models Disinformation Detection Benchmark</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/tab_gallery.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+  <link rel="stylesheet" href="juxtapose/css/juxtapose.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/magnifier.js"></script>
+  <link href="https://fonts.cdnfonts.com/css/menlo" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/image_card_fader.css">
+  <link rel="stylesheet" href="./static/css/image_card_slider.css">
+
+</head>
+
+<style>
+  @import url('https://fonts.cdnfonts.com/css/menlo');
+</style>
+
+
+<body>
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-2 publication-title">VLDBench: <u>V</u>ision <u>L</u>anguage Models
+              <u>D</u>isinformation Detection <u>Bench</u>mark
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=chcz7RMAAAAJ&hl=en">Shaina Raza</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://swetha5.github.io/">Aravind Narayanan</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=lEWvRbIAAAAJ&hl=en">Vahid
+                  Reza Khazaie</a><sup>1</sup></span>
+              <span class="author-block"><a
+                  href="https://scholar.google.com/citations?user=p8gsO3gAAAAJ&hl=en&oi=ao">Mukund Sayeeganesh Chettiar</a><sup>1</sup></span>
+              <span class="author-block"><a href="https://ashmalvayani.github.io/">Ashmal Vayani</a><sup>2</sup>,</span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>Vector Institute for Artificial Intelligence</span>
+              <span class="author-block"><sup>2</sup>University of Central Florida</span>
+            </div>
+
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://www.arxiv.org/abs/2502.11361" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                </span>
+                <span class="link-block">
+                  <a href="https://huggingface.co/datasets/vector-institute/VLDBench" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-database"></i>
+                    </span>
+                    <span>Dataset</span>
+                  </a>
+                </span>
+<!--                 <span class="link-block">
+                  <a href="https://github.com/VectorInstitute" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+            
+                <span class="link-block">
+                  <a href="#bibtex" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-obp"></i>
+                    </span>
+                    <span>BibTex</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <p align="justify">
+          Motivated by the growing influence of Generative AI in shaping digital narratives and the critical need to combat disinformation, we present the Vision-Language Disinformation Detection Benchmark <b><i>(VLDBench)</i></b>. This comprehensive benchmark empowers researchers to evaluate and enhance the capabilities of AI systems in detecting multimodal disinformation, addressing the unique challenges posed by the interplay of textual and visual content. By bridging gaps in existing benchmarks, VLDBench sets the stage for building safer, more transparent, and equitable AI models that safeguard public trust in digital platforms.</p>
+        <!-- <br> -->
+
+        <div class="column">
+          <div style="text-align:center;">
+            <!-- <h4 class="subtitle has-text-centered"> -->
+            <img src="static/images/example_page-0001.jpg" style="max-width:50%">
+            <!-- </h4> -->
+
+            <div class="content has-text-justified">
+              <p align="justify"> <b> <span>Figure</span></b>:
+                Visual & Textual Disinformation Example: Amplifying fear (left: false biohazard imagery) and controversy (gender biases in sports), distorting perception through fabricated associations and emotional manipulation.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <br><br>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="hero is-light is-small">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <!-- Visual Effects. -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            The rapid rise of Generative AI (GenAI)-generated content has made detecting disinformation increasingly challenging. In particular, multimodal disinformation i.e., online posts/articles that contain images and texts with fabricated information are specially designed to deceive. While existing AI safety benchmarks primarily address bias and toxicity, disinformation detection remains largely underexplored. To address this challenge, we present the Vision-Language Disinformation Detection Benchmark <i>(VLDBench)</i>—the first comprehensive benchmark for detecting disinformation across both unimodal (text-only) and multimodal (text and image) content, comprising <i>31,000</i> news article-image pairs, spanning 13 distinct categories, for robust evaluation. <i>VLDBench</i> features a rigorous semi-automated data curation pipeline, with 22 domain experts dedicating 300+ hours to annotation, achieving a strong inter-annotator agreement (Cohen’s κ = 0.82). We extensively evaluate state-of-the-art Large Language Models (LLMs) and Vision Language Models (VLMs), demonstrating that integrating textual and visual cues in multimodal news posts improves disinformation detection accuracy by 5–15% compared to unimodal models. Developed in alignment with AI governance frameworks such as the EU AI Act, NIST guidelines, and the MIT AI Risk Repository 2024, <i>VLDBench</i> is expected to become a benchmark
+            for detecting disinformation in online multi-modal content. Our code and data will be made publicly
+            available.<br>
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3"><i>VLDBench</i> is the largest and most comprehensive humanly verified disinformation
+            detection benchmark with over 300 hours of human verification.</h2>
+          <div class="content has-text-justified">
+            <p>
+            <h5> <b> Main contributions: </b></h5>
+            <ol>
+              <li> <b>VLDBench: </b> Human-verified multimodal benchmark for disinformation detection. Curated from 58 diverse news sources, it contains 31.3k news article-image pairs spanning 13 distinct categories. </li>
+              <li><b>Expert Annotation: </b>Curated by 22 domain experts over 300+ hours, achieving high label accuracy
+                (Cohen’s κ = 0.82).</li>
+              <li><b>Model Benchmarking: </b>Evaluates LLMs and VLMs, identifying performance gaps and areas for improvement in addressing the challenges of multimodal disinformation in various contexts.</li>
+
+            </ol>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+    </div>
+  </section>
+
+  <section class="section">
+
+    <!--/ Matting. -->
+    <div class="container is-max-desktop">
+
+      <!-- Latent space editing applications -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          
+          <h2 class="title is-3 has-text-centered">VLDBench Dataset Overview</h2>
+
+          <div class="content has-text-justified">
+            <p>VLDBench is a comprehensive classification multimodal benchmark for disinformation detection in news articles. We categorized our data into 13 unique news categories by providing image-text pairs to GPT-4o.</p>
+            <div class="content has-text-centered"><img src="static/images/ComparisonDatasets.png"  style="max-width:80%">
+              <p class="content has-text-justified"> <b> <span>Table</span></b>: Comparison of VLDBench with contemporary datasets.</p>
+            </div>
+            
+            <!-- <br><br> -->
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              <!-- <b> <span style="color: blue;">SB-Bench</span></b> comprises of nine social bias categories. -->
+            <div class="content has-text-centered">
+              <img src="static/images/news_categories_distribution_page-0001.jpg" style="max-width:80%">
+              <p class="content has-text-justified"><b> <span>Figure</span></b>: Category distribution with overlaps. Total unique articles = 31,339. Percentages sum to > 100% due to multi-category articles.</p>
+              <!-- <img src="static/images/outlet_distribution.jpg" style="max-width:100%">
+              <p class="content has-text-justified">
+                Distribution of Articles Across Various News Outlets. This bar chart illustrates the number
+                of articles published by each outlet in our dataset, highlighting the predominant sources of news
+                coverage.
+              </p> -->
+            </div>
+          </div>
+          
+
+        </div>
+      </div>
+
+      <!--/ Matting. -->
+      <div class="container is-max-desktop">
+
+        <!-- Latent space editing applications -->
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <!-- <h2 class="title is-3 has-text-centered">VLDBench Pipeline</h2> -->
+            <div class="content has-text-centered">
+              <!-- <img src="static/images/architecture.png" style="max-width:100%">
+              <p align="justify"> <b> <span>Figure</span></b>:
+                <i>VLDBench</i> is a multimodal disinformation detection framework, focusing on LLM/VLM benchmarking,
+                human-AI collaborative annotation, and risk mitigation. It operates through a three-stage
+                pipeline: (1) Data (collection, filtering, and quality assurance of text-image pairs), (2) Annotation
+                (GPT4 labeling with human validation), (3) Benchmarking (prompt-based evaluation and robustness
+                testing).
+              </p> -->
+
+             
+
+
+              <!-- <img src="./static/images/paired_image_pipeline.jpg" style="max-width:50%">
+            
+              <p class="content has-text-justified">
+              <div class="content has-text-justified">
+                <p align="justify"> <b> <span>Figure</span></b>:
+                  Paired Images Pipeline: For dual-image queries, the Dual Query Generator creates two separate queries, each
+                  independently sent to a web search. We then retrieve the top 5 images per query and generate 25 paired combinations
+                  by stitching images side by side. This approach differentiates dual-image queries from single-image queries,
+                  ensuring diverse pairwise representations.</p>
+              </div> -->
+
+
+              <div class="content has-text-justified">
+                <h3 class="title is-4 has-text-justified">Data Statistics</h3>
+
+                <p align="justify"> Data comprises 31,339 articles and visual samples curated from 58 news sources ranging from the Financial Times, CNN, and New York Times to Axios and Wall Street Journal. VLDBench spans 13 unique categories: National, Business and Finance,International, Entertainment, Local/Regional, Opinion/Editorial, Health, Sports, Politics, Weather and Environment, Technology, Science, and Other -adding depth to the disinformation domains. </p>
+              </div>
+
+
+              <div class="content has-text-justified">
+                <div class="content has-text-centered">
+                  <img src="static/images/key_dataset_statistics.png" style="max-width:50%">
+                </div>
+                <p align="justified"> <b> <span>Figure</span></b>: Key Dataset Statistics</p>
+              </div>
+            </div>
+          <h2 class="title is-3 has-text-centered">Three-Stage Pipeline</h2>
+            <img src="static/images/architecture.png">
+            <!-- </h4> -->
+
+            <div class="content has-text-justified">
+              <p align="justify"> <b> <span>Figure</span></b>:
+                <i>VLDBench</i> is a multimodal disinformation detection framework, focusing on LLM/VLM benchmarking,
+                human-AI collaborative annotation, and risk mitigation. It operates through a three-stage
+                pipeline: (1) Data (collection, filtering, and quality assurance of text-image pairs), (2) Annotation
+                (GPT4 labeling with human validation), (3) Benchmarking (prompt-based evaluation and robustness
+                testing).
+              </p>
+            </div>
+
+            <div class="content has-text-justified">
+              <h3 class="title is-4 has-text-justified">Data </h3>
+              <p align="justify">
+                The collected dataset underwent a rigorous processing pipeline, including quality checks to remove incomplete or low-quality entries, duplicates, and irrelevant URLs. Articles were selected based on textual depth and image quality, with curated text-image news articles moved to the annotation phase for further analysis and model training.
+              </p>
+              
+              <h3 class="title is-4 has-text-justified">Annotation</h3>
+            
+              <p align="justify"> After quality assurance, each article was classified by GPT-4o as either Likely or Unlikely to contain disinformation, with text-image alignment assessed three times per sample to ensure accuracy and resolve ties. The figure below shows an example of disinformation narratives analyzed by GPT-4o, highlighting confidence levels and reasoning. </p>
+            </div>
+
+            <div class="content has-text-justified">
+              <div class="content has-text-centered">
+                <img src="static/images/qualitative_page-0001.jpg" style="max-width:80%">
+              </div>
+              <p align="justified"> <b> <span>Figure</span></b>: Disinformation Trends Across News Categories generated by GPT-4o based on disinformation narratives and confidence levels. </p>
+              </p>
+            </div>
+
+            <!-- <h3 class="title is-4 has-text-justified">Benchmark</h3>
+              <p align="justify">
+                VLDBench evaluates the performance of LLMs and VLMs on disinformation detection tasks, focusing on text-only and multimodal analysis. The benchmarking process includes prompt-based evaluations and robustness testing to assess model performance.
+              </p> -->
+          </div>
+
+        </div>
+      </div>
+      <br><br>
+      <div class="content has-text-centered">
+        <h3 class="title is-4 has-text-justified">LLMs and VLMs used for Benchmarking</h3>
+        <div class="content has-text-justified">
+          <p align="justify"> After annotation stage, we move to benchmarking where we evaluate ten state-of-the-art open-source VLMs and nine LLMs on VLDBench, evaluating LLMs on text-only tasks and VLMs on multimodal analysis (text + images). We focus on open-source LLMs and VLMs to promote accessibility and transparency in our research. The evaluation process includes both quantitative and qualitative assessments n both prompt-based and fine-tuned models </p>
+          <!-- I want width to be 80% center aligned-->
+          <table style="width:80%" align="center">
+            <tr>
+                <th>Language-Only LLMs</th>
+                <th>Vision-Language Models (VLMs)</th>
+            </tr>
+        
+            <tr>
+                <td>Phi-3-mini-128k-instruct</td>
+                <td>Phi-3-Vision-128k-Instruct</td>
+            </tr>
+            <tr>
+                <td>Vicuna-7B-v1.5</td>
+                <td>LLaVA-v1.5-Vicuna7B</td>
+            </tr>
+            <tr>
+                <td>Mistral-7B-Instruct-v0.3</td>
+                <td>LLaVA-v1.6-Mistral-7B</td>
+            </tr>
+            <tr>
+                <td>Qwen2-7B-Instruct</td>
+                <td>Qwen2-VL-7B-Instruct</td>
+            </tr>
+            <tr>
+                <td>InternLM2-7B</td>
+                <td>InternVL2-8B</td>
+            </tr>
+            <tr>
+                <td>DeepSeek-V2-Lite-Chat</td>
+                <td>Deepseek-VL2-small</td>
+            </tr>
+            <tr>
+                <td>GLM-4-9B-chat</td>
+                <td>GLM-4V-9B</td>
+            </tr>
+            <tr>
+                <td>LLaMA-3.1-8B-Instruct</td>
+                <td>LLaMA-3.2-11B-Vision </td>
+            </tr>
+            <tr>
+                <td>LLaMA-3.2-1B-Instruct</td>
+                <td>Deepseek Janus-Pro-7B</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>Pixtral</td>
+          </tr>
+        </table>
+        
+        
+        <!-- <br>
+        <div class="content has-text-justified">
+          <p align="justify"> <b> <span>Table</span></b>: We evaluate the standard deviation for Qwen2-VL-7B and InternVL2-8B
+            models on randomized multiple-choice orders and shuffled images in the paired image setting. Both models exhibit
+            low variability and are consistent. </p>
+        </div>
+        <br> -->
+      </div>
+
+      <br><br>
+
+      <div class="columns is-centered">
+        <div class="column is-full-width has-text-centered">
+          <h2 class="title is-3">Experimental results on VLDBench</h2>
+
+          <div class="content has-text-justified">
+            <p> Our investigation focuses on three core ques404 tions: (1) Does multimodal (text+image) data improve
+              disinformation detection compared to text alone? (2) Does instruction-based fine tuning enhance
+              generalization and robustness? (3) How vulnerable are models to adversarial perturbations in text and
+              images? </p>
+          </div>
+
+          <h3 class="title is-4 has-text-justified">Multimodal Models Surpass Unimodal Baselines</h3>
+
+          <div class="content has-text-centered">
+            <p style="text-align: justify;">
+              VLMs generally out perform language-only LLMs. For example, LLaMA-3.2-11B-Vision outperforms LLaMA 3.2-1B (text-only). Similarly, Phi, LLaVA, Pixtral, InternVL, DeepSeek-VL, and GLM360 4V perform better than their text-only counterparts. The performance gains between these two sets of models are quite pronounced. For instance, LLaVA-v1.5-Vicuna7B improves accuracy by 27% over its unimodal base (Vicuna-7B), highlighting the critical role of visual context. However, Qwen2-VL-7B marginally lags behind its text-only counterpart, suggesting that the effectiveness of modality integration can vary depending on the model’s architecture. While top LLMs remain competitive, VLMs excel in recall, a vital trait for minimizing missed disinformation in adversarial scenarios.</p>
+            <!-- <img src="static/images/zero-shot_performance.png" style="max-width:100%"> -->
+             <!-- <img src="static/images/radar_plot_page-0001.jpg" style="max-width:80%"> -->
+            <!-- <p style="text-align: justify;"> <b> <span>Figure</span></b>: Performance comparison of vision language models for disinformation detection across key metrics: precision, recall, F1 and accuracy, with different colors representing distinct metrics </p> -->
+          </div>
+          <!-- <br /> -->
+          <h3 class="title is-4 has-text-justified">Instruction Fine-Tuning Enhances Performance</h3>
+          <div class="content has-text-centered">
+            <p style="text-align: justify;">
+              Instruction fine-tuning (IFT) on models like Phi, Mistral-Llava, Qwen, and Llama3.2—along with their vision-language counterparts—utilizing the training subset of VLDBench led to significant performance improvements across all models compared to their zero-shot capabilities. For instance, Phi-3-Vision-IFT achieved a 7% increase in F1 model over their zero-shot baselines. This enhancement is not solely due to better output formatting; rather, it reflects the model ability to adapt to and learn from disinformation-specific cues in the data.</p>
+            <img src="static/images/ift.png" style="max-width:80%">
+            <p style="text-align: justify;"> <span><b>Figure</b></span>: Comparison of zero-shot vs. instruction-fine-tuned (IFT) performance, with 95% confidence intervals computed from three independent runs. </p>
+
+
+          </div>
+        </div>
+      </div>
+
+      <h2 class="title is-3">Robustness to Adversarial Perturbations</h2>
+      <h3 class="title is-4 has-text-justified">Text and Image Attacks</h3>
+
+      <div class="content has-text-justified">
+        <p> We tested each model under controlled perturbations (zero-shot evaluation), including textual and image perturbations. Textual perturbations include synonym substitution, misspellings, and negations. Image perturbations (I-P) include blurring, gaussian noise, and resizing. We also include Multi modality attacks: cross-modal misalignment (C-M) (e.g., mismatched image captions) and both modality perturbations (B-P) (both text and image distortions). The following images are examples of various perturbations.</p>
+        <div class="content has-text-centered">
+          <img src="static/images/perturbation_text_page-0001.jpg" style="max-width:65%">
+          <p style="text-align: justify;"> <b> <span>Figure</span></b>: We describe the text perturbations in the caption,
+            introducing Synonym, Misspelling, and Negation. Our analysis shows that text negation leads to a majority of
+            disinformation cases.</p>
+        </div>
+
+          
+        <!-- <p>Image perturbations (I-P) include blurring, gaussian noise, and resizing. We also include Multi modality attacks: cross-modal misalignment (C-M) (e.g., mismatched image captions) and both modality perturbations (B-P) (both text and image distortions). The following image is an example of image, cross-modal, and both-modality perturbations.
+        </p> -->
+        <div class="content has-text-centered">
+          <img src="static/images/perturbation_image_page-0001.jpg" style="max-width:65%">
+          <p style="text-align: justify;"> <b> <span>Figure</span></b>: We describe the image perturbations in the caption, introducing Blur, Noise, and Resizing, Cross-Modal (C-M) Mismatch, Both-Modality (BM). Our analysis shows that C-M and B-M leads to a majority of disinformation cases.</p>
+        </div>
+        
+      </div>
+     
+
+      
+      <h3 class="title is-4 has-text-justified">Combined Attacks</h3>
+
+      <div class="content has-text-justified">
+        <p> Combining text+image adversarial attacks can cause catastrophic performance drops in high-capacity models. These findings illustrate that multimodal methods, despite generally higher baseline accuracy, remain susceptible when adversaries deliberately target both modalities.</p>
+      </div>
+      <!-- <div class="content has-text-centered">
+        <img src="static/images/VisualTransformations.png" style="max-width:100%">
+        <p style="text-align: justify;"> <b> <span>Figure</span></b>: Visual transformations and their impact on disinformation classification. Noise and downscaling can shift model outputs from “Yes” to “No.”</p>
+      </div> -->
+
+      <h3 class="title is-4 has-text-justified">Human Evaluation Establishes Reliability and Reasoning Depth</h3>
+
+      <div class="content has-text-justified">
+        <p> We conducted a human evaluation of three IFT VLMs (LlaMA-3.2-11B, Pixtral, LLaVA-v1.6) on a balanced 500-sample test set (250 disinformation, 250 neutral). Each model classified samples and provided a rationale. Three independent reviewers, blinded to model identities, rated the outputs based on Prediction Correctness (PC) and Reasoning Clarity (RC), both on a scale of 1–5. The image below shows a representative example of model reasoning and highlights differences in explanatory quality.</p>
+      </div>
+      <div class="content has-text-centered">
+        <img src="static/images/reasoning_page-0001.jpg" style="max-width:80%">
+        <p style="text-align: justify;"> <b> <span>Figure</span></b>: Human evaluation results on a 500-sample test set. Models were tasked with classifying disinformation and justifying their predictions. PC = prediction correctness, RC = reasoning clarity (mean ± std.).</p>
+      </div>
+
+      <div class="content has-text-justified">
+        <h3 class="title is-4 has-text-justified">Conclusion</h3>
+        <div class="content has-text-justified">
+          <p>
+            VLDBench addresses the urgent challenge of disinformation through a design rooted in responsible data stewardship
+            and human-centered principles, integrating best practices to meet key AI governance requirements. Unlike other
+            benchmarks, VLDBench uniquely targets the complexity of disinformation in the post-ChatGPT era, where GenAI has
+            amplified a lot of false information. It is the first dataset explicitly designed to evaluate modern V/LLMs on
+            emerging disinformation challenges, maintaining a topical focus.
+            <br><br>
+            However, some limitations need attention. The reliance on pre-verified news sources introduces potential sampling
+            bias, and the annotation process, partially based on AI, may inherit some biases. There is also a need for more
+            research into adversarial attacks on multimodal performance. The current focus on English language only limits its applicability to multilingual and culturally diverse contexts. Despite these limitations, VLDBench represents an effort in benchmarking disinformation detection and opens venues for collaboration from researchers and practitioners to address this challenge.</p>
+          <br>
+          <p>For additional details about VLDBench evaluation and experimental results, please refer to our main paper.
+            Thank you! </p>
+        </div>
+
+        <div class="columns is-centered">
+          <div class="column is-full-width has-text-centered">
+            <h2 class="title is-3">Social Statement</h2>
+          </div>
+        </div>
+        <div class="content has-text-justified">
+          <p> Disinformation threatens democratic institutions, public trust, and social cohesion. <b>Generative AI
+              exacerbates the problem</b> by enabling sophisticated multimodal campaigns that exploit cultural,
+            political, and linguistic nuances, requiring solutions beyond technical approaches. </p>
+          <p> <b>VLDBench</b> addresses this challenge as the first multimodal benchmark for disinformation detection,
+            combining text and image analysis with ethical safeguards. It prioritizes <b>cultural sensitivity</b>
+            through regional annotations and mitigates bias with audits and human-AI hybrid validation. Ground-truth
+            labels are sourced from fact-checked references with transparent provenance tracking. </p>
+          <p> As both a <b>technical resource</b> and a <b>catalyst for collaboration</b>, VLDBench democratizes
+            access to cutting-edge detection tools by open-sourcing its benchmark and models. It highlights systemic
+            risks, like adversarial attack vulnerabilities, to drive <b>safer and more reliable systems</b>. Designed
+            to foster partnerships across academia, industry, journalism, and policymaking, VLDBench bridges the gap
+            between research and real-world impact. </p>
+          <p> <b>Ethical risks</b> are carefully addressed through restricted access, exclusion of synthetic tools,
+            and human oversight requirements. Representation gaps in non-English content are documented to guide
+            future adaptations. Binding agreements prohibit harmful applications such as censorship, surveillance, or
+            targeted disinformation campaigns. </p>
+          <p> By focusing exclusively on disinformation detection, VLDBench supports <b>media literacy</b>, unbiased
+            fact-checking, and policy discussions on AI governance. Its <b>ethical design</b> and <b>equitable
+              access</b> empower communities and institutions to combat disinformation while fostering trust in
+            digital ecosystems. </p>
+        </div>
+      </div>
+    </div>
+
+
+
+      
+
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title"><a id="bibtex">BibTeX</a></h2>
+      <pre><code>To be released.</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p class="has-text-centered">
+            Website adapted from the following <a href="https://mingukkang.github.io/GigaGAN/">source code</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    </div>
+  </footer>
+
+
+  <script src="juxtapose/js/juxtapose.js"></script>
+
+  <script>
+    var slider;
+    let origOptions = {
+      "makeResponsive": true,
+      "showLabels": true,
+      "mode": "horizontal",
+      "showCredits": true,
+      "animate": true,
+      "startingPosition": "50"
+    };
+
+    const juxtaposeSelector = "#juxtapose-embed";
+    const transientSelector = "#juxtapose-hidden";
+
+    inputImage.src = "./static/images/".concat(name, "_input.jpg")
+    outputImage.src = "./static/images/".concat(name, "_output.jpg")
+
+    let images = [inputImage, outputImage];
+    let options = slider.options;
+    options.callback = function (obj) {
+      var newNode = document.getElementById(obj.selector.substring(1));
+      var oldNode = document.getElementById(juxtaposeSelector.substring(1));
+      console.log(obj.selector.substring(1));
+      console.log(newNode.children[0]);
+      oldNode.replaceChild(newNode.children[0], oldNode.children[0]);
+      //newNode.removeChild(newNode.children[0]);
+
+    };
+
+    slider = new juxtapose.JXSlider(transientSelector, images, options);
+};
+
+
+
+    (function () {
+      slider = new juxtapose.JXSlider(
+        juxtaposeSelector, origImages, origOptions);
+      //document.getElementById("left-button").onclick = replaceLeft;
+      //document.getElementById("right-button").onclick = replaceRight;
+    })();
+    // Get the image text
+    var imgText = document.getElementById("imgtext");
+    // Use the same src in the expanded image as the image being clicked on from the grid
+    // expandImg.src = imgs.src;
+    // Use the value of the alt attribute of the clickable image as text inside the expanded image
+    imgText.innerHTML = name;
+    // Show the container element (hidden with CSS)
+    // expandImg.parentElement.style.display = "block";
+
+    $(".flip-card").click(function () {
+      console.log("fading in")
+      div_back = $(this).children().children()[1]
+      div_front = $(this).children().children()[0]
+      // console.log($(this).children("div.flip-card-back"))
+      console.log(div_back)
+      $(div_front).addClass("out");
+      $(div_front).removeClass("in");
+
+      $(div_back).addClass("in");
+      $(div_back).removeClass("out");
+
+    });
+
+    $(".flip-card").mouseleave(function () {
+      console.log("fading in")
+      div_back = $(this).children().children()[1]
+      div_front = $(this).children().children()[0]
+      // console.log($(this).children("div.flip-card-back"))
+      console.log(div_back)
+      $(div_front).addClass("in");
+      $(div_front).removeClass("out");
+
+      $(div_back).addClass("out");
+      $(div_back).removeClass("in");
+
+    });
+
+  </script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
