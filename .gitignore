@@ -195,3 +195,25 @@ cython_debug/
 !docs/*.csv
 !docs/*.xls
 !docs/*.xlsx
+
+# Allow subdirectories in docs/
+!docs/**/*.png
+!docs/**/*.jpg
+!docs/**/*.jpeg
+!docs/**/*.gif
+!docs/**/*.svg
+!docs/**/*.json
+!docs/**/*.csv
+!docs/**/*.xls
+!docs/**/*.xlsx
+
+# Allow in /docs/static/images
+!docs/static/images/*.png
+!docs/static/images/*.jpg
+!docs/static/images/*.jpeg
+!docs/static/images/*.gif
+!docs/static/images/*.svg
+!docs/static/images/*.json
+!docs/static/images/*.csv
+!docs/static/images/*.xls
+!docs/static/images/*.xlsx
