@@ -74,7 +74,10 @@
                   Reza Khazaie</a><sup>1</sup></span>
               <span class="author-block"><a
                   href="https://scholar.google.com/citations?hl=en&user=Gn1FIg4AAAAJ">Mukund Sayeeganesh Chettiar</a><sup>1</sup></span>
+              <span class="author-block"><a
+                    href="#">Amandeep Singh</a><sup>1</sup></span>
               <span class="author-block"><a href="https://ashmalvayani.github.io/">Ashmal Vayani</a><sup>2</sup>,</span>
+              <span class="author-block"><a href="https://scholar.google.com/citations?user=o1XZyLMAAAAJ&hl=en">Deval Pandya</a><sup>1</sup>,</span>
             </div>
 
             <div class="is-size-5 publication-authors">
@@ -87,7 +90,7 @@
               <div class="publication-links">
                 <!-- PDF Link. -->
                 <span class="link-block">
-                  <a href="https://www.arxiv.org/abs/2502.11361" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                  <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="ai ai-arxiv"></i>
                     </span>
@@ -96,7 +99,7 @@
                 </span>
                 </span>
                 <span class="link-block">
-                  <a href="https://huggingface.co/datasets/vector-institute/VLDBench" target="_blank"
+                  <a href="#" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-database"></i>
@@ -139,13 +142,10 @@
 
         <div class="column">
           <div style="text-align:center;">
-            <!-- <h4 class="subtitle has-text-centered"> -->
-            <img src="static/images/Figure0.png" style="max-width:50%">
-            <!-- </h4> -->
-
+            <img src="static/images/Figure1.png" style="max-width:100%">
             <div class="content has-text-justified">
               <p align="justify"> <b> <span>Figure</span></b>:
-                Overview of HumaniBench's alignment principles and associated evaluation metrics. The benchmark assesses models across seven dimensions of human-centered AI, including fairness, ethics, perceptual honesty, reasoning, multilinguality, empathy, and robustness.
+                HumaniBench: end-to-end benchmark construction pipeline. The figure traces four stages: (a) Data Preparation raw news and socialimage streams are deduplicated, captioned, and tagged by a VLM, then verified by human reviewers; (b) Alignment Principles & Evaluation seven humancentric dimensions (Fairness, Ethical Compliance, Perceptual Honesty, Contextual Reasoning, Multilingual Equity, Empathy, Robustness) and the metrics reported on the right; (c) Labeling for Task multimodal inputs are autolabelled with GPT-4o and refined through iterative human feedback; (d) Task Setting the curated corpus is organized into seven evaluation tasks (T1-T7). Together these stages yield a human-centric benchmark for assessing modern MLLMs.
               </p>
             </div>
           </div>
@@ -202,6 +202,7 @@
           </div>
         </div>
       </div>
+      
       <!--/ Abstract. -->
 
     </div>
@@ -230,6 +231,12 @@
             </div>
           </div>
 
+          <div class="content has-text-centered">
+            <img src="static/images/Figure0.png" style="max-width:50%">
+            <p class="content has-text-justified"><b> <span>Figure</span></b>: Overview of HumaniBench's alignment principles and associated evaluation metrics. The benchmark assesses models across seven dimensions of human-centered AI, including fairness, ethics, perceptual honesty, reasoning, multilinguality, empathy, and robustness.
+            </p><br>
+          </div>
+
 
         </div>
       </div>
@@ -246,6 +253,7 @@
               <p class="content has-text-justified"><b> <span>Figure</span></b>: Overview of the annotation process for HumaniBench
               </p>
             </div>
+
 
             <div class="content has-text-justified">
               <p align="justify"> 
@@ -301,34 +309,35 @@
       </div>
       <br><br>
       <div class="content has-text-centered">
-        <h3 class="title is-4 has-text-justified">LLMs and VLMs used for Benchmarking</h3>
+        <h3 class="title is-4 has-text-justified">Multimodal Models under Evaluation</h3>
         <div class="content has-text-justified">
           <p align="justify"> For HumaniBench, we evaluate thirteen state-of-the-art open-source multimodal models (VLMs) across diverse human-alignment tasks. These models represent a range of vision encoders, language backbones, and fusion techniques. By focusing exclusively on vision-language models, HumaniBench provides a rigorous testbed for assessing human-centered reasoning, fairness, empathy, and robustness in real-world multimodal scenarios. </p>
           <!-- I want width to be 80% center aligned-->
           <table style="width:60%; margin: 0 auto; border-collapse: collapse; font-family: sans-serif;">
             <thead style="background-color: #f2f2f2;">
               <tr>
-                <th style="padding: 12px; border-bottom: 2px solid #ccc; font-size: 1.1em; text-align: left;">
+                <th style="padding: 8px; border-bottom: 2px solid #ccc; font-size: 1.1em; text-align: left;">
                   Vision-Language Models (VLMs)
                 </th>
               </tr>
             </thead>
             <tbody>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">CogVLM2-19B</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Cohere Aya Vision 8B</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">DeepSeek VL2 Small</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">GLM-4V-9B</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">InternVL2.5</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Janus-Pro-7B</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">LLaMA-3.2-11B-Vision</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">LLaVA-v1.6</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Molmo-7B</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Phi 4 Multimodal</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Phi 3.5 Vision</td></tr>
-              <tr><td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Qwen2.5-VL-7B</td></tr>
-              <tr><td style="padding: 10px;">Gemma 3</td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/THUDM/cogvlm2-llama3-chat-19B" target="_blank">CogVLM2-19B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/CohereLabs/aya-vision-8b" target="_blank">Cohere Aya Vision 8B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/deepseek-ai/deepseek-vl2-small" target="_blank">DeepSeek VL2 Small</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/THUDM/glm-4v-9b" target="_blank">GLM-4V-9B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/OpenGVLab/InternVL2_5-8B" target="_blank">InternVL2.5 8B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/deepseek-ai/Janus-Pro-7B" target="_blank">Janus-Pro-7B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct" target="_blank">LLaMA 3.2 11B Vision Instruct</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/llava-hf/llava-v1.6-vicuna-7b-hf" target="_blank">LLaVA-v1.6-Vicuna-7B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/allenai/Molmo-7B-D-0924" target="_blank">Molmo-7B</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/microsoft/phi-4" target="_blank">Phi 4</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/microsoft/Phi-3.5-vision-instruct" target="_blank">Phi 3.5 Vision Instruct</a></td></tr>
+              <tr><td style="padding: 6px; border-bottom: 1px solid #e0e0e0;"><a href="https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct" target="_blank">Qwen2.5-VL-7B Instruct</a></td></tr>
+              <tr><td style="padding: 6px;"><a href="#" target="_blank">Gemma 3</a></td></tr>
             </tbody>
           </table>
+          
         
         
       </div>
@@ -337,126 +346,157 @@
 
       <div class="columns is-centered">
         <div class="column is-full-width has-text-centered">
-          <h2 class="title is-3">Experimental results on VLDBench</h2>
+          <h2 class="title is-3">Benchmarking Results on HumaniBench</h2>
 
           <div class="content has-text-justified">
-            <p> Our investigation focuses on three core ques404 tions: (1) Does multimodal (text+image) data improve
-              disinformation detection compared to text alone? (2) Does instruction-based fine tuning enhance
-              generalization and robustness? (3) How vulnerable are models to adversarial perturbations in text and
-              images? </p>
+            <p> We evaluated both open‐source and closed‐source MLLMs on HumaniBench using a variety of tasks (T1–T7). This section presents our main empirical findings and highlights key challenges for MLLMs. </p>
           </div>
 
-          <h3 class="title is-4 has-text-justified">Multimodal Models Surpass Unimodal Baselines</h3>
+          <h3 class="title is-4 has-text-justified">Social Perception and Contextual Reasoning Remain Challenging</h3>
 
           <div class="content has-text-centered">
+            <div class="content has-text-centered">
+              <img src="static/images/Figure3.png" style="max-width:80%">
+              <p class="content has-text-justified"><b> <span>Figure</span></b>: Comparative Analysis of Model Performance. (a) Task-specific rankings with aggregate scores (lower is better). (b) Bias patterns across evaluation dimensions. (c) Accuracy distribution across test scenarios. Heatmaps share common axes from Tasks 1-3.</p>
+            </div>
             <p style="text-align: justify;">
-              VLMs generally out perform language-only LLMs. For example, LLaMA-3.2-11B-Vision outperforms LLaMA 3.2-1B (text-only). Similarly, Phi, LLaVA, Pixtral, InternVL, DeepSeek-VL, and GLM360 4V perform better than their text-only counterparts. The performance gains between these two sets of models are quite pronounced. For instance, LLaVA-v1.5-Vicuna7B improves accuracy by 27% over its unimodal base (Vicuna-7B), highlighting the critical role of visual context. However, Qwen2-VL-7B marginally lags behind its text-only counterpart, suggesting that the effectiveness of modality integration can vary depending on the model’s architecture. While top LLMs remain competitive, VLMs excel in recall, a vital trait for minimizing missed disinformation in adversarial scenarios.</p>
+              HumaniBench reveals that despite strong performance in core tasks, many models still struggle with
+              <strong>fairness</strong>, <strong>perceptual bias</strong>, and <strong>reasoning</strong>—especially across sensitive attributes like race, gender, and occupation. As shown in the figure above, some top-performing models (e.g., Phi 4, CogVLM2-19B) achieve high accuracy while maintaining relatively low bias, suggesting that <em>accuracy–fairness trade-offs are not inevitable</em>. However, disparities in performance remain most pronounced in race and gender categories, highlighting the need for targeted mitigation strategies.
+            </p>
+
+            <div class="content has-text-centered">
+              <img src="static/images/Figure4.png" style="max-width:60%">
+              <p class="content has-text-justified"><b> <span>Figure</span></b>: Correlation coefficients between closed-ended accuracy (multiple-choice VQA) and open-ended reasoning accuracy (model explanations) across various VQA models. Closed-source models (highlighted in distinct color) show stronger correlations, indicating better consistency between selected answers and explanatory reasoning.</p>
+            </div>
+
+            <p style="text-align: justify;">
+              The above figure highlights reasoning consistency, showing that closed-source models like Gemini and GPT-4o demonstrate stronger correlations between multiple-choice answers and their generated reasoning. This reflects better internal coherence, while open-source models continue to show variability in <em>faithfulness</em>, <em>contextual relevance</em>, and <em>coherence</em>. Together, these findings emphasize that achieving holistic human alignment requires going beyond accuracy—incorporating fairness, 
+              robustness, and reasoning fidelity.
+            </p>
+
             <!-- <img src="static/images/zero-shot_performance.png" style="max-width:100%"> -->
              <!-- <img src="static/images/radar_plot_page-0001.jpg" style="max-width:80%"> -->
             <!-- <p style="text-align: justify;"> <b> <span>Figure</span></b>: Performance comparison of vision language models for disinformation detection across key metrics: precision, recall, F1 and accuracy, with different colors representing distinct metrics </p> -->
           </div>
           <!-- <br /> -->
-          <h3 class="title is-4 has-text-justified">Instruction Fine-Tuning Enhances Performance</h3>
+          <h3 class="title is-4 has-text-justified">Multilingual Gaps Persist Across MLLMs</h3>
+          <div class="content has-text-centered">
+            <div class="content has-text-centered">
+              <img src="static/images/Figure5.png" style="max-width:80%">
+              <p class="content has-text-justified"><b> <span>Figure</span></b>: Examples of multilingual evaluation across high-resource (Mandarin, Portuguese, Korean, French) and low-resource (Urdu, Tamil) languages.</p>
+            </div>
+
+            <p style="text-align: justify;">
+              HumaniBench includes multilingual evaluation across both open-ended and closed-ended tasks. 
+              We assess models on a mix of high-resource and low-resource languages to better understand disparities 
+              in accuracy and bias. While performance on high-resource languages tends to be more consistent, 
+              we observe persistent gaps in low-resource language support, highlighting ongoing challenges in achieving 
+              equitable multilingual alignment.</p>
+              <table style="width:60%; margin: 0 auto; border-collapse: collapse; font-family: sans-serif;">
+                <thead style="background-color: #f2f2f2;">
+                  <tr>
+                    <th style="padding: 10px; border-bottom: 2px solid #ccc;">High-Resource Languages</th>
+                    <th style="padding: 10px; border-bottom: 2px solid #ccc;">Low-Resource Languages</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">English (Reference)</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Urdu</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">French</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Persian</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Spanish</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Bengali</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Portuguese</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e0e0e0;">Punjabi</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px;">Mandarin</td>
+                    <td style="padding: 10px;">Tamil</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px;">Korean</td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+
+          </div>
+
+          <h3 class="title is-4 has-text-justified">MLLMs Underperform Traditional Detectors in Bounding Box Localization</h3>
           <div class="content has-text-centered">
             <p style="text-align: justify;">
-              Instruction fine-tuning (IFT) on models like Phi, Mistral-Llava, Qwen, and Llama3.2—along with their vision-language counterparts—utilizing the training subset of VLDBench led to significant performance improvements across all models compared to their zero-shot capabilities. For instance, Phi-3-Vision-IFT achieved a 7% increase in F1 model over their zero-shot baselines. This enhancement is not solely due to better output formatting; rather, it reflects the model ability to adapt to and learn from disinformation-specific cues in the data.</p>
-            <img src="static/images/ift.png" style="max-width:80%">
-            <p style="text-align: justify;"> <span><b>Figure</b></span>: Comparison of zero-shot vs. instruction-fine-tuned (IFT) performance, with 95% confidence intervals computed from three independent runs. </p>
+              Despite advancements in spatial reasoning, <strong>HumaniBench</strong> results show that MLLMs still underperform traditional object detectors like <em>Faster R-CNN</em> in bounding box localization. Evaluated on a 500-image benchmark, most models struggled with precision. <strong>GPT-4o</strong> emerged as the strongest among MLLMs, achieving the highest mAP and IoU, though still lagging behind the supervised baseline.</p>
+            <p style="text-align: justify;">
+              These results are expected since most MLLMs lack direct supervision for box-level tasks. Their spatial reasoning emerges from vision–language alignment, not from dedicated detection heads. While traditional detectors use region proposal networks and spatial backbones, MLLMs often output coordinates through text generation, requiring post-processing and yielding less precise localization overall.
+            </p>
+          </div>
 
+          <h3 class="title is-4 has-text-justified">Empathy vs. Factuality: How MLLMs Vary by Prompt</h3>
+          <div class="content has-text-centered">
+            <p style="text-align: justify;">
+              A key challenge in real-world image captioning—especially for sensitive news content—is balancing 
+              <strong>emotional resonance</strong> with <strong>factual accuracy</strong>. To explore this, HumaniBench prompts MLLMs to generate captions in two styles: <em>Simple</em> (neutral, factual) and <em>Emphatic</em> (emotionally attuned). Using linguistic analysis tools, we observe that different models exhibit distinct <strong>emotional signatures</strong>. 
+            </p>
+            <p style="text-align: justify;">
+              For example, some models like Phi emphasize serious emotional tone, while others such as OpenAI's o1-mini favor uplifting or motivational expressions. These variations highlight the importance of <em>model selection and calibration</em>, especially when generating content for crisis response, public engagement, or emotionally sensitive contexts. Aligning the model’s output style with communication goals is crucial for responsible deployment.
+            </p>
+
+          </div>
+
+          <h3 class="title is-4 has-text-justified"> Robustness Under Real-World Conditions is still a Challenge for MLLMs</h3>
+          <div class="content has-text-centered">
+            <p style="text-align: justify;">
+              Despite impressive performance on clean datasets, HumaniBench reveals that many MLLMs remain vulnerable 
+              to everyday visual distortions like <strong>noise</strong>, <strong>blur</strong>, <strong>occlusions</strong>, and <strong>compression artifacts</strong>. Even minor perturbations can significantly degrade model accuracy, especially in tasks involving social attributes such as <em>race, gender, or cultural symbols</em>.
+            </p>
+            <p style="text-align: justify;">
+              These findings underscore the importance of designing MLLMs that are not just accurate in ideal settings, 
+              but also <strong>robust to real-world conditions</strong>. Addressing this gap will require advances in architecture design, training objectives, and dataset diversity to ensure consistent interpretability across noisy, dynamic, and imperfect inputs typical of real-world scenarios.
+            </p>
+
+
+          </div>
+          <div class="content has-text-centered">
+            <img src="static/images/Table12.png" style="max-width:80%">
+            <p style="text-align: justify;"> <span><b>Figure</b></span>: Qualitative Robustness Evaluation Across Different Perturbations using GPT-4o </p>
+          </div>
+
+
+          <h3 class="title is-4 has-text-justified"> CoT Prompting improves Accuracy and Reduces Bias</h3>
+          <div class="content has-text-centered">
+            <p style="text-align: justify;">
+              HumaniBench results show that using <strong>Chain-of-Thought (CoT) prompting</strong> guides models through step-by-step reasoning—leads to <strong>consistent accuracy gains (2–4%)</strong> and <strong>lower bias</strong> in open-ended VQA tasks (T1, T2). By encouraging intermediate reasoning rather than direct answers, CoT prompts improve model transparency and decision-making clarity on complex, socially nuanced queries.
+              While this suggests CoT may be a valuable tool for mitigating bias in reasoning-heavy tasks, further investigation is needed to fully understand the causal mechanisms behind these improvements.
+            </p>
 
           </div>
         </div>
       </div>
-
-      <h2 class="title is-3">Robustness to Adversarial Perturbations</h2>
-      <h3 class="title is-4 has-text-justified">Text and Image Attacks</h3>
-
-      <div class="content has-text-justified">
-        <p> We tested each model under controlled perturbations (zero-shot evaluation), including textual and image perturbations. Textual perturbations include synonym substitution, misspellings, and negations. Image perturbations (I-P) include blurring, gaussian noise, and resizing. We also include Multi modality attacks: cross-modal misalignment (C-M) (e.g., mismatched image captions) and both modality perturbations (B-P) (both text and image distortions). The following images are examples of various perturbations.</p>
-        <div class="content has-text-centered">
-          <img src="static/images/perturbation_text_page-0001.jpg" style="max-width:65%">
-          <p style="text-align: justify;"> <b> <span>Figure</span></b>: We describe the text perturbations in the caption,
-            introducing Synonym, Misspelling, and Negation. Our analysis shows that text negation leads to a majority of
-            disinformation cases.</p>
-        </div>
-
-          
-        <!-- <p>Image perturbations (I-P) include blurring, gaussian noise, and resizing. We also include Multi modality attacks: cross-modal misalignment (C-M) (e.g., mismatched image captions) and both modality perturbations (B-P) (both text and image distortions). The following image is an example of image, cross-modal, and both-modality perturbations.
-        </p> -->
-        <div class="content has-text-centered">
-          <img src="static/images/perturbation_image_page-0001.jpg" style="max-width:65%">
-          <p style="text-align: justify;"> <b> <span>Figure</span></b>: We describe the image perturbations in the caption, introducing Blur, Noise, and Resizing, Cross-Modal (C-M) Mismatch, Both-Modality (BM). Our analysis shows that C-M and B-M leads to a majority of disinformation cases.</p>
-        </div>
-        
-      </div>
-     
 
       
-      <h3 class="title is-4 has-text-justified">Combined Attacks</h3>
 
       <div class="content has-text-justified">
-        <p> Combining text+image adversarial attacks can cause catastrophic performance drops in high-capacity models. These findings illustrate that multimodal methods, despite generally higher baseline accuracy, remain susceptible when adversaries deliberately target both modalities.</p>
-      </div>
-      <!-- <div class="content has-text-centered">
-        <img src="static/images/VisualTransformations.png" style="max-width:100%">
-        <p style="text-align: justify;"> <b> <span>Figure</span></b>: Visual transformations and their impact on disinformation classification. Noise and downscaling can shift model outputs from “Yes” to “No.”</p>
-      </div> -->
-
-      <h3 class="title is-4 has-text-justified">Human Evaluation Establishes Reliability and Reasoning Depth</h3>
-
-      <div class="content has-text-justified">
-        <p> We conducted a human evaluation of three IFT VLMs (LlaMA-3.2-11B, Pixtral, LLaVA-v1.6) on a balanced 500-sample test set (250 disinformation, 250 neutral). Each model classified samples and provided a rationale. Three independent reviewers, blinded to model identities, rated the outputs based on Prediction Correctness (PC) and Reasoning Clarity (RC), both on a scale of 1–5. The image below shows a representative example of model reasoning and highlights differences in explanatory quality.</p>
-      </div>
-      <div class="content has-text-centered">
-        <img src="static/images/reasoning_page-0001.jpg" style="max-width:80%">
-        <p style="text-align: justify;"> <b> <span>Figure</span></b>: Human evaluation results on a 500-sample test set. Models were tasked with classifying disinformation and justifying their predictions. PC = prediction correctness, RC = reasoning clarity (mean ± std.).</p>
-      </div>
-
-      <div class="content has-text-justified">
-        <h3 class="title is-4 has-text-justified">Conclusion</h3>
+        <!-- Center align  -->
+        <div class="column is-full-width has-text-centered">
+          <h2 class="title is-3">Conclusion</h2>
+        </div>
+        <!-- <h2 class="title is-4 has-text-centered">Conclusion</h2> -->
         <div class="content has-text-justified">
           <p>
-            VLDBench addresses the urgent challenge of disinformation through a design rooted in responsible data stewardship
-            and human-centered principles, integrating best practices to meet key AI governance requirements. Unlike other
-            benchmarks, VLDBench uniquely targets the complexity of disinformation in the post-ChatGPT era, where GenAI has
-            amplified a lot of false information. It is the first dataset explicitly designed to evaluate modern V/LLMs on
-            emerging disinformation challenges, maintaining a topical focus.
-            <br><br>
-            However, some limitations need attention. The reliance on pre-verified news sources introduces potential sampling
-            bias, and the annotation process, partially based on AI, may inherit some biases. There is also a need for more
-            research into adversarial attacks on multimodal performance. The current focus on English language only limits its applicability to multilingual and culturally diverse contexts. Despite these limitations, VLDBench represents an effort in benchmarking disinformation detection and opens venues for collaboration from researchers and practitioners to address this challenge.</p>
+            HumaniBench introduces a comprehensive, real-world benchmark for evaluating the human alignment of multimodal large language models (MLLMs) across fairness, empathy, multilingual equity, perceptual honesty, and robustness. Through seven diverse tasks and evaluations spanning over 30K curated image–question pairs, the benchmark reveals persistent gaps in social reasoning, bias mitigation, and consistency especially under perturbation and across low-resource languages. While some models show promising accuracy–fairness trade-offs and benefit from CoT prompting, the findings underscore the importance of going beyond accuracy toward building models that are not only capable but also ethically and contextually aware.</p>
           <br>
-          <p>For additional details about VLDBench evaluation and experimental results, please refer to our main paper.
-            Thank you! </p>
+          <p>For additional details about HumaniBench evaluation and experimental results, please refer to our main paper. Thank you! </p>
         </div>
 
-        <div class="columns is-centered">
-          <div class="column is-full-width has-text-centered">
-            <h2 class="title is-3">Social Statement</h2>
-          </div>
-        </div>
-        <div class="content has-text-justified">
-          <p> Disinformation threatens democratic institutions, public trust, and social cohesion. <b>Generative AI
-              exacerbates the problem</b> by enabling sophisticated multimodal campaigns that exploit cultural,
-            political, and linguistic nuances, requiring solutions beyond technical approaches. </p>
-          <p> <b>VLDBench</b> addresses this challenge as the first multimodal benchmark for disinformation detection,
-            combining text and image analysis with ethical safeguards. It prioritizes <b>cultural sensitivity</b>
-            through regional annotations and mitigates bias with audits and human-AI hybrid validation. Ground-truth
-            labels are sourced from fact-checked references with transparent provenance tracking. </p>
-          <p> As both a <b>technical resource</b> and a <b>catalyst for collaboration</b>, VLDBench democratizes
-            access to cutting-edge detection tools by open-sourcing its benchmark and models. It highlights systemic
-            risks, like adversarial attack vulnerabilities, to drive <b>safer and more reliable systems</b>. Designed
-            to foster partnerships across academia, industry, journalism, and policymaking, VLDBench bridges the gap
-            between research and real-world impact. </p>
-          <p> <b>Ethical risks</b> are carefully addressed through restricted access, exclusion of synthetic tools,
-            and human oversight requirements. Representation gaps in non-English content are documented to guide
-            future adaptations. Binding agreements prohibit harmful applications such as censorship, surveillance, or
-            targeted disinformation campaigns. </p>
-          <p> By focusing exclusively on disinformation detection, VLDBench supports <b>media literacy</b>, unbiased
-            fact-checking, and policy discussions on AI governance. Its <b>ethical design</b> and <b>equitable
-              access</b> empower communities and institutions to combat disinformation while fostering trust in
-            digital ecosystems. </p>
-        </div>
+      
       </div>
     </div>
 
