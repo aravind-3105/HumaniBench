@@ -1,6 +1,8 @@
 import os
 import json
 import pandas as pd
+import argparse
+
 
 def extract_scores_and_matches(directory_path):
     # Prepare a list to store the results for all files
@@ -47,6 +49,13 @@ def extract_scores_and_matches(directory_path):
 
     return df
 
-# Example usage: extract scores and matches from the processed folder
-directory_path = "./eval7/evaluation/eval7_results_openAI"  # Replace with your actual processed folder path
-extract_scores_and_matches(directory_path)
+if __name__ == "__main__":
+    # Take the directory path as a command line argument
+    parser = argparse.ArgumentParser(description="Extract scores and matches from processed evaluation files.")
+    parser.add_argument('directory_path', type=str, help='Path to the directory containing processed evaluation files.')
+    args = parser.parse_args()
+    directory_path = args.directory_path
+    extract_scores_and_matches(directory_path)
+
+# Example usage:
+# python process_evaluation.py --directory_path <path_to_your_directory_containing_json_files>

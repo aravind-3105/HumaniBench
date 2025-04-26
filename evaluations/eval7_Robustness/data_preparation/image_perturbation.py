@@ -15,8 +15,8 @@ AUGMENTERS = {
     "blur": iaa.GaussianBlur(sigma=(0.0, 2.5)),
     "noise": iaa.AdditiveGaussianNoise(scale=0.1 * 255),
     "motion_blur": iaa.MotionBlur(k=10),
-    "scale_0.5": iaa.Resize(0.5),
-    "scale_2": iaa.Resize(2.0),
+    # "scale_0.5": iaa.Resize(0.5),
+    # "scale_2": iaa.Resize(2.0),
     "compression": iaa.JpegCompression(compression=90),
     "blackout": iaa.CoarseSaltAndPepper(0.2, size_percent=(0.1, 0.1))
 }
@@ -54,8 +54,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Apply image perturbations using imgaug.")
     parser.add_argument("--input_folder", required=True, help="Folder with input images.")
     parser.add_argument("--output_folder", required=True, help="Folder to save augmented images.")
-    parser.add_argument("--perturbation", default="all",choices=["blur", "noise", "scale_0.5", "scale_2", "motion_blur", "compression", "blackout", "all"],
+    parser.add_argument("--perturbation", default="all",choices=["blur", "noise", "motion_blur", "compression", "blackout", "all"],
                         help="Type of perturbation to apply (default: all).")
     args = parser.parse_args()
 
     apply_augmentation(args.input_folder, args.output_folder, args.perturbation)
+
+# To run the script:
+# python image_perturbation.py --input_folder path/to/input --output_folder path/to/output --perturbation blur

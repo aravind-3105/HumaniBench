@@ -28,7 +28,7 @@ def load_model(model_source="local"):
 
     model = AutoModelForCausalLM.from_pretrained(
         model_path, 
-        trust_remote_code=True,  # Required for Phi-3
+        trust_remote_code=True,  # Required for Phi-4
         torch_dtype="auto",  # Automatically selects best precision (FP16/BF16)
         device_map="auto",  # Automatically assigns to GPU
         # _attn_implementation='flash_attention_2'  # Optimized for fast inference
@@ -93,9 +93,9 @@ def process_sample(model, processor, img_path, question, device):
         return "Error"
 
 # Main function to process dataset
-def evaluate(model, processor, dataset, image_folder, save_path, attack, mode="single"):
+def evaluate(model, processor, dataset, image_folder, save_path, attack):
     results = []
-    logger.info(f"Starting evaluation in {mode} mode...")
+    logger.info(f"Starting evaluation...")
     intermediate_results_path = save_path.replace(".json", "_intermediate.json")
     prev_path = ""
     with tqdm(total=len(dataset), unit="sample") as pbar:
@@ -142,12 +142,11 @@ if __name__ == "__main__":
 
     # Command-line arguments
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="./data/eval2/QA_Eval2.json", help="Path to dataset")
-    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to image folder")
+    parser.add_argument("--dataset", type=str, help="Path to dataset")
+    parser.add_argument("--image_folder", type=str, help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
     parser.add_argument("--save_path", type=str, default="./results/results_Phi4.json", help="Output file to save results")
-    parser.add_argument("--model_source", type=str, default="local", help="Model source: 'local' or 'hf'")
-    parser.add_argument("--mode", type=str, default="single", choices=["single", "batch"], help="Single or batch processing")
+    parser.add_argument("--model_source", type=str, default="hf", help="Model source: 'local' or 'hf'")
     parser.add_argument("--attack", type=str, default="compression", help="Attack type")
 
     
@@ -172,6 +171,9 @@ if __name__ == "__main__":
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
     # Run evaluation
-    evaluate(model, processor, dataset, args.image_folder, args.save_path, args.attack, args.mode)
+    evaluate(model, processor, dataset, args.image_folder, args.save_path, args.attack)
 
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+# To run the script:
+# python Phi4.py --dataset <path_to_dataset> --image_folder <path_to_image_folder> --save_path results_Phi4.json --model_source local --attack <attack_type>

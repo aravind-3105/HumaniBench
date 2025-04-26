@@ -64,32 +64,7 @@ def clean_text(text, tags=None):
 
 # Model configurations: Rules to apply for each model
 MODEL_CONFIGS = {
-    'Llava_v1_6': {
-        "reasoning_split": "\n\nReasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'Deepseek_VL2': {
-        "reasoning_split": "\n\nReasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'JanusPro': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'Molmo': {
-        "reasoning_split": "\n\nReasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
     'Llama_Vision': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'paligemma': {
         "reasoning_split": "Reasoning:",
         "answer_split": 'Answer:',
         "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
@@ -99,39 +74,9 @@ MODEL_CONFIGS = {
         "answer_split": 'Answer:',
         "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
     },
-    'CogVLM2': {
-        "reasoning_split": "The reasoning",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'InternVL2': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'Qwen': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": '<answer>',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'GLM': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'Magma': {
-        "reasoning_split": "Reasoning:",
-        "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
     'Aya': {
         "reasoning_split": "Reasoning:",
         "answer_split": 'Answer:',
-        "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
-    },
-    'InstructBLIP': {
-        "reasoning_split": None,
-        "answer_split": None,
         "cleanup_tags": [r'<reasoning>', r'<answer>', r'[<>]']
     },
     'gemma3_12b': {
@@ -173,5 +118,8 @@ def process_files(RESULTS_FOLDER, SAVE_FOLDER):
 
 if __name__ == "__main__":
     RESULTS_FOLDER = "./results"
-    SAVE_FOLDER = "./results/eval7_cleaned"
+    SAVE_FOLDER = "./results/cleaned"
     process_files(RESULTS_FOLDER, SAVE_FOLDER)
+
+# To run the script:
+# python postprocess.py

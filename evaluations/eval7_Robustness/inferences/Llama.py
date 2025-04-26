@@ -131,7 +131,7 @@ def process_sample(model, processor, img_path, question, device):
         return "Error"
 
 # Main function to process dataset
-def evaluate(model, processor, dataset, image_folder, save_path, attack, mode="single"):
+def evaluate(model, processor, dataset, image_folder, save_path, attack):
     results = []
     logger.info("Starting evaluation...")
     count = 0
@@ -178,12 +178,11 @@ if __name__ == "__main__":
 
     # Command-line arguments
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="./data/eval5/eval2/Eval2_French.json", help="Path to dataset")
-    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to image folder")
+    parser.add_argument("--dataset", type=str, help="Path to dataset")
+    parser.add_argument("--image_folder", type=str, help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
-    parser.add_argument("--save_path", type=str, default="./results/results_Llama_Eval2_French.json", help="Output file to save results")
-    parser.add_argument("--model_source", type=str, default="local", help="Model source: 'local' or 'hf'")
-    parser.add_argument("--mode", type=str, default="single", choices=["single", "batch"], help="Single or batch processing")
+    parser.add_argument("--save_path", type=str, default="./results/results_Llama.json", help="Output file to save results")
+    parser.add_argument("--model_source", type=str, default="hf", help="Model source: 'local' or 'hf'")
     parser.add_argument("--num_samples", type=int, default=0, help="Number of samples to process")
     parser.add_argument("--quantized", type=bool, default=False, help="Use quantized model")
     parser.add_argument("--attack", type=str, default="compression", help="Attack type")
@@ -223,7 +222,11 @@ if __name__ == "__main__":
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
     # Run evaluation
-    evaluate(model, processor, dataset, args.image_folder, args.save_path, args.attack, args.mode)
+    evaluate(model, processor, dataset, args.image_folder, args.save_path, args.attack)
 
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
     logger.info("Evaluation completed.")
+
+
+# To run the script:
+# python Llama.py --dataset <path_to_dataset> --image_folder <path_to_image_folder> --save_path <path_to_save_results> --attack <attack_type>

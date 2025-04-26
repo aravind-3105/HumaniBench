@@ -198,7 +198,7 @@ def submit_batches(client, batch_files, batch_id_file='batch_ids.txt'):
 # Argument parsing
 def parse_args():
     parser = ArgumentParser(description="Generate questions for images using OpenAI GPT-4 with batch processing.")
-    parser.add_argument("--data_folder", type=str, default="./data/eval7/", help="Path to the folder containing images")
+    parser.add_argument("--data_folder", type=str, help="Path to the folder containing images and JSON files.")
     parser.add_argument("--openai_api_key", type=str, required=True, help="Your OpenAI API key")
 
     return parser.parse_args()
@@ -207,8 +207,6 @@ if __name__ == "__main__":
     args = parse_args()
 
     client = load_openai_client(args.openai_api_key)
-
-
 
     data_path = args.data_folder
     # Get all json files in the folder
@@ -221,9 +219,6 @@ if __name__ == "__main__":
             data = json.load(f)
         # Print number of items in the data
         print(f"Number of items in {json_file}: {len(data)}")
-        # continue
-        # Select first 10 items for testing
-        # data = data[:10]
             
         batch_files = generate_batch_json_files(data)
         print("Generated batch files.")
@@ -233,3 +228,6 @@ if __name__ == "__main__":
         # Submit batches to OpenAI
         submit_batches(client, batch_files, batch_id_file)
         print("Submitted batches to OpenAI.")
+
+# To run the script:
+# python eval7_openAI.py --data_folder <path_to_your_data_folder> --openai_api_key <your_openai_api_key>
