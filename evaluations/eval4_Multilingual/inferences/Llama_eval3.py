@@ -1,73 +1,99 @@
-import torch
-import json
 import os
+import json
+import re
 import time
 import logging
-import base64
-import re
 from argparse import ArgumentParser
-from io import BytesIO
+
+import torch
 from PIL import Image
 from tqdm import tqdm
-from transformers import AutoProcessor, AutoModelForImageTextToText
+from transformers import (
+    AutoProcessor,
+    AutoModelForImageTextToText,
+    BitsAndBytesConfig,
+    set_seed
+)
 
-# Model directory and Hugging Face Model ID
-MODEL_DIR = "/model-weights/aya-vision-8b"  # Local model path
-HF_MODEL_ID = "CohereForAI/aya-vision-8b"      # Hugging Face Model ID
+# Set a seed for reproducibility
+set_seed(45)
+
+# User settings and environment variables
+OFFLOAD_FOLDER = "" # Path to offload folder
+os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
+os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
+
+# Model parameters
+MAX_NEW_TOKENS = 256
+MODEL_DIR = "/model-weights/Llama-3.2-11B-Vision-Instruct/"  # Local model path
+HF_MODEL_ID = "meta-llama/Llama-3.2-11B-Vision-Instruct"       # Hugging Face Model ID
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Set environment variables for caching
-OFFLOAD_FOLDER = "" # Path to offload folder
-os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
-os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
 
-
-
-def load_model(model_source="local"):
+def load_model(model_source="local", quantized=False):
     """
-    Load the Aya-Vision model and its processor.
+    Load the Llama 3.2 Vision model and its processor.
 
     Args:
-        model_source (str): 'local' to load from a local directory; otherwise, load from Hugging Face.
+        model_source (str): 'local' to load from a local directory; otherwise from Hugging Face.
+        quantized (bool): Whether to use 4-bit quantization for reduced memory usage.
 
     Returns:
         tuple: (model, processor)
     """
-    print(f"Loading Aya-Vision Vision model from {'local directory' if model_source == 'local' else 'Hugging Face'}...")
+    logger.info(f"Loading Llama 3.2 Vision model from {'local' if model_source == 'local' else 'Hugging Face'}...")
     model_path = MODEL_DIR if model_source == "local" else HF_MODEL_ID
 
-    # Ensure cache directories are set
-    os.environ["HF_HOME"] = ""
-    os.environ["TRANSFORMERS_CACHE"] = ""
-
-    model = AutoModelForImageTextToText.from_pretrained(
-        model_path,
-        device_map="auto",
-        offload_folder="/scratch/ssd004/scratch/aravindn/offload",
-        trust_remote_code=True,
-        cache_dir=os.environ["TRANSFORMERS_CACHE"]
-    )
+    # Load the processor
     processor = AutoProcessor.from_pretrained(
         model_path,
         trust_remote_code=True,
         cache_dir=os.environ["TRANSFORMERS_CACHE"]
     )
+
+    if quantized:
+        logger.info("Using 4-bit quantization for efficient memory usage.")
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=torch.bfloat16
+        )
+        model = AutoModelForImageTextToText.from_pretrained(
+            model_path,
+            torch_dtype=torch.bfloat16,
+            quantization_config=bnb_config,
+            device_map="auto",
+            offload_folder=OFFLOAD_FOLDER,
+            cache_dir=os.environ["TRANSFORMERS_CACHE"]
+        )
+    else:
+        logger.info("Using full-precision model (FP16).")
+        model = AutoModelForImageTextToText.from_pretrained(
+            model_path,
+            torch_dtype=torch.float16,
+            device_map="auto",
+            offload_folder=OFFLOAD_FOLDER,
+            cache_dir=os.environ["TRANSFORMERS_CACHE"]
+        )
+
+    logger.info("Model loaded successfully.")
     return model, processor
 
 
 def resize_image(img_path, max_size=(350, 350)):
     """
-    Resize an image to fit within max_size while preserving its aspect ratio.
+    Resize an image to fit within max_size while preserving aspect ratio.
 
     Args:
         img_path (str): Path to the image file.
         max_size (tuple): Maximum (width, height).
 
     Returns:
-        PIL.Image.Image or None: Resized image if successful, None otherwise.
+        Image: Resized PIL image if successful, None otherwise.
     """
     try:
         image = Image.open(img_path).convert("RGB")
@@ -82,8 +108,8 @@ def extract_answer_and_reason(text):
     """
     Extract the answer and reasoning from the VLM response.
 
-    First attempts to extract a JSON substring from the response.
-    If that fails, uses regex to extract the answer and reasoning.
+    The function first attempts to parse a JSON substring from the response.
+    If that fails, it uses a regex pattern to extract the answer and reasoning.
 
     Args:
         text (str): The VLM response text.
@@ -104,7 +130,7 @@ def extract_answer_and_reason(text):
     except Exception:
         pass
 
-    # Fallback: use regex to extract answer and reasoning
+    # Fallback: extract using regex
     try:
         pattern = r'(?:\*\*Answer:\*\*|Answer:)\s*"?([^"\n]*)"?\s*(?:\*\*Reasoning:\*\*|Reasoning:)\s*"?([^"\n]*)"?'
         match = re.search(pattern, text)
@@ -118,81 +144,70 @@ def extract_answer_and_reason(text):
         return text, None
 
 
-def process_sample(model, processor, img_path, question, device, language):
+def process_sample(model, processor, img_path, question, language, device):
     """
-    Process an image-question pair and generate a response.
+    Process a single image-question pair and generate a response.
 
     Args:
-        model: Loaded model.
-        processor: Associated processor.
+        model: The loaded language model.
+        processor: The associated processor.
         img_path (str): Path to the image file.
-        question (str): Question text.
-        device: Torch device.
-        language (str): Prompt language.
+        question (str): The question (with options) to be answered.
+        language (str): Language for the prompt.
+        device: Torch device to run the model on.
 
     Returns:
-        str: Generated response or an error message.
+        str: The generated response or an error message.
     """
     try:
         # Resize the image
         image = resize_image(img_path)
         if image is None:
             return "Error: Could not process image"
-        
-        # Format the prompt
-        query_prompt = f"""Answer the question using one of the given choices based on the image.
+
+        user_prompt = f"""Answer the question using one of the given choices based on the image in the {language} language:
 
         Question ({language}):
         {question}
 
-        Provide the response only in the following JSON format:
-        {{"Answer": "The correct letter and option",
-        "Reasoning": "A brief explanation (max 80 words) based on the details in the image"}}
+        Provide the response only in the following JSON format in {language} language:
+        {{"Answer": "The correct letter and option in {language} language",
+        "Reasoning": "A brief explanation (max 80 words) based on the details in the image in {language} language"}}.
 
         Do not provide any other extra information.
         """
-        # Convert the image to bytes and then encode as base64
-        img_byte_arr = BytesIO()
-        image.save(img_byte_arr, format='JPEG')
-        img_byte_arr = img_byte_arr.getvalue()
-        base64_image_url = f"data:image/jpeg;base64,{base64.b64encode(img_byte_arr).decode('utf-8')}"
-
-        # Construct messages for the chat template
+        # Construct conversation messages as required by the model
         messages = [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "image_url", "image_url": {"url": base64_image_url}},
-                    {"type": "text", "text": query_prompt},
-                ]
-            }
+            {"role": "user", "content": [
+                {"type": "image"},
+                {"type": "text", "text": user_prompt}
+            ]}
         ]
 
-        # Prepare inputs using the chat template
-        inputs = processor.apply_chat_template(
-            messages,
-            padding=True,
-            add_generation_prompt=True,
-            tokenize=True,
-            return_dict=True,
+        # Apply chat template to get the input text prompt
+        input_text = processor.apply_chat_template(messages, add_generation_prompt=True)
+
+        # Prepare inputs with the resized image and the input text
+        inputs = processor(
+            images=image,
+            text=input_text,
+            add_special_tokens=False,
             return_tensors="pt"
-        ).to(model.device)
+        ).to(device)
 
         # Generate the response
         with torch.no_grad():
-            gen_tokens = model.generate(
+            output = model.generate(
                 **inputs,
-                max_new_tokens=256,
+                max_new_tokens=MAX_NEW_TOKENS,
                 do_sample=False,
             )
 
-        # Decode the generated tokens (excluding the input tokens)
-        predicted_answer = processor.tokenizer.decode(
-            gen_tokens[0][inputs.input_ids.shape[1]:],
-            skip_special_tokens=True
-        )
+        # Decode the output and extract the assistant response
+        predicted_answer = processor.decode(output[0], skip_special_tokens=True)
+        # Extract the text after "assistant" token (if present)
+        predicted_answer = predicted_answer[predicted_answer.find("assistant") + 9:]
         return predicted_answer if predicted_answer else "No answer generated"
-
     except Exception as e:
         logger.error(f"Error processing {img_path}: {e}")
         return "Error"
@@ -203,35 +218,42 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
     Evaluate the model on a dataset of image-question pairs and save the results.
 
     Args:
-        model: The loaded model.
+        model: The loaded language model.
         processor: The associated processor.
         dataset (list): List of data samples.
         image_folder (str): Directory containing images.
-        save_path (str): Path to save the final results JSON.
+        save_path (str): File path to save the final results.
         language (str): Language of the questions and answers.
+        mode (str): Processing mode ('single' or 'batch').
 
     Returns:
         None
     """
     results = []
-    logger.info(f"Starting evaluation...")
+    logger.info("Starting evaluation...")
     prev_path = ""
 
     with tqdm(total=len(dataset), unit="sample") as pbar:
         for i, data in enumerate(dataset):
-            # Dynamically choose keys based on language
+            img_path = os.path.join(image_folder, f"{data['ID']}.jpg")
+            if not os.path.exists(img_path):
+                logger.warning(f"Image not found for ID {data['ID']} at {img_path}")
+                pbar.update(1)
+                continue
+
+            # Dynamically construct keys based on language
             q_key = f"Question({language})"
             o_key = f"Options({language})"
             a_key = f"Answer({language})"
             r_key = f"Reasoning({language})"
 
-            # Check if required keys exist and are non-empty
             if q_key not in data or a_key not in data:
-                logger.warning(f"Missing keys for {language} in dataset entry {data['ID']}")
+                logger.warning(f"Question or Answer key not found in data: {data}")
                 pbar.update(1)
                 continue
-            if not data[q_key] or not data[o_key]:
-                logger.warning(f"Empty question or choices for {language} in dataset entry {data['ID']}")
+
+            if not data[q_key] or not data[a_key]:
+                logger.warning(f"Empty question or answer in data: {data}")
                 results.append({
                     "ID": data["ID"],
                     "Question": data[q_key],
@@ -244,24 +266,23 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
                 pbar.update(1)
                 continue
 
-            # Combine question and options
+            # Combine question and options for processing
             question_with_choices = data[q_key] + "\n" + data[o_key]
-
-            # Process the sample
             response = process_sample(
                 model,
                 processor,
                 os.path.join(image_folder, f"{data['ID']}.jpg"),
                 question_with_choices,
-                device,
-                language
+                language,
+                device
             )
-            answer, reason = extract_answer_and_reason(response)
+            answer, reasoning = extract_answer_and_reason(response)
             results.append({
                 "ID": data["ID"],
-                "Question": question_with_choices,
+                "Question": data[q_key],
+                "Prediction": response,
                 "Predicted_Answer": answer,
-                "Predicted_Reasoning": reason,
+                "Predicted_Reasoning": reasoning,
                 "Ground_Truth_Answer": data[a_key],
                 "Ground_Truth_Reasoning": data[r_key],
                 "Attribute": data["Attribute"]
@@ -281,7 +302,7 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
 
             pbar.update(1)
 
-    # Save final results
+    # Save final results to a JSON file
     with open(save_path, "w") as f:
         json.dump(results, f, indent=4, default=str)
     logger.info(f"Results saved to {save_path}.")
@@ -293,39 +314,57 @@ if __name__ == "__main__":
     # Command-line arguments
     parser = ArgumentParser()
     parser.add_argument("--dataset", type=str,
-                        default="./data/eval5/eval3/Eval3_French.json",
                         help="Path to dataset")
     parser.add_argument("--image_folder", type=str,
-                        default="./data/processed_images",
                         help="Path to image folder")
-    parser.add_argument("--device", type=str,
-                        default="cuda",
+    parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="./results/results_Aya_Vision_8B_Eval3_French.json",
                         help="Output file to save results")
-    parser.add_argument("--model_source", type=str,
-                        default="local",
+    parser.add_argument("--model_source", type=str, default="local",
                         help="Model source: 'local' or 'hf'")
+    parser.add_argument("--num_samples", type=int, default=0,
+                        help="Number of samples to process")
+    parser.add_argument("--quantized", type=bool, default=False,
+                        help="Use quantized model")
     args = parser.parse_args()
 
     # Define device
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    logger.info(f"Using device: {device}")
+
+    # Determine model source (local vs Hugging Face)
+    model_source = "huggingface" if args.model_source == "hf" else "local"
+    logger.info(f"Model source: {model_source}")
+
+    # Load model and processor
+    model, processor = load_model(model_source, quantized=args.quantized)
+    model.to(device)
 
     # Determine language from dataset filename (assumes language is after the last '_' and before '.json')
     language = args.dataset.split("_")[-1].split(".")[0]
     logger.info(f"Processing dataset in {language} language...")
 
-    # Load model and processor
-    model, processor = load_model(args.model_source)
-    # Note: The model handles device placement automatically via device_map
     # Load dataset
     with open(args.dataset, "r") as f:
         dataset = json.load(f)
-
+    if args.num_samples > 0:
+        dataset = dataset[args.num_samples:]
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
     # Run evaluation
     evaluate(model, processor, dataset, args.image_folder, args.save_path, language)
-
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+# To run the script:
+# python Llama_eval3.py \
+# --dataset <path_to_dataset_json> \
+# --image_folder <path_to_image_folder> \
+# --device <cuda_or_cpu> \
+# --save_path <path_to_save_results_json> \
+# --model_source <local_or_hf> \
+# --num_samples <number_of_samples_to_process> \
+# --quantized <True_or_False>
+
+# Note: The script assumes that the dataset JSON file contains keys for questions, answers, and options in the specified language.
+# The dataset file name should be in the format "Eval3_<language>.json" where <language> is the language of the dataset.

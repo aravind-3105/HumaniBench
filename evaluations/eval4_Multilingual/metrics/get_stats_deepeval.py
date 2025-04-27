@@ -121,10 +121,11 @@ def get_stats_attributes(folder_path, output_filename="stats_attributes.csv"):
 
 
 # Example usage:
-folder_path = "./Eval2_deepeval"
+folder_path = "./Eval2_deepeval" # Path to the folder containing CSV files
 
 # Get overall stats
 get_stats(folder_path)
 
 # Get stats for attributes
 get_stats_attributes(folder_path)
+

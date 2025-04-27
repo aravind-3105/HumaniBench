@@ -24,7 +24,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 load_dotenv()
 
 # Constants
-MODEL = 'gpt-4o-mini'
+MODEL = 'gpt-4o'
 SAVE_INTERVAL = 5
 
 
@@ -185,7 +185,7 @@ def main(input_file, output_file, english_reference_file):
 
 if __name__ == "__main__":
     # Argument parser setup
-    parser = argparse.ArgumentParser(description="Evaluate LLM responses for bias and toxicity.")
+    parser = argparse.ArgumentParser(description="Evaluate LLM responses for bias, answer relevancy, and faithfulness.")
     parser.add_argument("--input", type=str, required=True, help="Path to the input JSON file")
     parser.add_argument("--output", type=str, required=True, help="Path to the output CSV file")
     parser.add_argument("--english_reference", type=str, required=True, help="Path to the English reference JSON file")
@@ -193,3 +193,14 @@ if __name__ == "__main__":
 
     # Run the evaluation
     main(args.input, args.output, args.english_reference)
+
+
+# To run the script, use the command:
+# python run_deepeval_Eval2.py \
+#     --input <path_to_input_json> \
+#     --output <path_to_output_csv> \
+#     --english_reference <path_to_english_reference_json>
+
+# Note: Ensure that the input JSON file is formatted correctly and contains the necessary fields.
+# Note: The script assumes that the input JSON files are in a specific format and contain the necessary fields.
+# The script processes evaluation results from multiple models, computes various metrics, and saves the results to a CSV file.

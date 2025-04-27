@@ -1,6 +1,10 @@
 import os
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import argparse
+import json
+import numpy as np
+import warnings
 
 
 def extract_options(input_json, answer_column, new_column):
@@ -129,11 +133,41 @@ def process_all_models(result_folder, eval3_dataset_folder):
     return results_df
 
 
-# Example usage
-result_folder = "./Eval5/eval3_results_decoded/"
-eval3_dataset_folder = "./Eval5/eval3_datasets"
-results_df = process_all_models(result_folder, eval3_dataset_folder)
+# # Example usage
+# result_folder = "./Eval5/eval3_results_decoded/"
+# eval3_dataset_folder = "./Eval5/eval3_datasets"
+# results_df = process_all_models(result_folder, eval3_dataset_folder)
 
-# Save results to CSV
-results_df.to_csv("stat_results_eval5_eval3.csv", index=False)
-print("Results saved to stat_results_eval5_eval3.csv")
+# # Save results to CSV
+# results_df.to_csv("stat_results_eval5_eval3.csv", index=False)
+# print("Results saved to stat_results_eval5_eval3.csv")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Process evaluation results and compute metrics.")
+
+    parser.add_argument("--result_folder", type=str, 
+                        help="Path to the folder containing model result JSON files.")
+    parser.add_argument("--eval3_dataset_folder", type=str, 
+                        help="Path to the folder containing Eval3 ground truth datasets.")
+    parser.add_argument("--output_csv", type=str, 
+                        default="stat_results_eval5_MCQs.csv",
+                        help="Path to save the output CSV file with evaluation metrics.")
+
+    args = parser.parse_args()
+
+    # Run processing
+    results_df = process_all_models(args.result_folder, args.eval3_dataset_folder)
+
+    # Save the results
+    results_df.to_csv(args.output_csv, index=False)
+    print(f"Results saved to {args.output_csv}")
+
+# To run the script, use the command:
+# python compute_stat_eval.py \
+#     --result_folder <path_to_result_folder> \
+#     --eval3_dataset_folder <path_to_eval3_dataset_folder> \
+#     --output_csv <path_to_output_csv>
+
+# Note: Ensure that the paths provided are correct and that the necessary files are present in the specified directories.
+# The script processes evaluation results from multiple models, computes various metrics, and saves the results to a CSV file.
+# The script is designed to handle multiple languages and includes options for excluding specific labels from the evaluation.

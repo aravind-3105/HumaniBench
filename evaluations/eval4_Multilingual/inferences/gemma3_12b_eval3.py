@@ -9,6 +9,9 @@ from torch.utils.data import Dataset, DataLoader
 from tqdm import tqdm
 from transformers import AutoProcessor, Gemma3ForConditionalGeneration
 from transformers.image_utils import load_image
+import base64
+from io import BytesIO
+import re
 
 # Model directory
 MODEL_DIR = "/model-weights/gemma3-12b-it"  # Local model path
@@ -99,11 +102,6 @@ def process_sample(model, processor, img_path, question,language):
         if image is None:
             return "Error: Could not process image"
         
-        # user_prompt = f"Given question, answer in the following format:\
-        #         Question:{question}\
-        #         Answer:<answer> \
-        #         Reasoning:<reasoning> in the context of the image."
-
         # Format the prompt with the provided language
         query_prompt= f"""Answer the question using one of the given choices based on the image.
 
@@ -236,12 +234,11 @@ if __name__ == "__main__":
     # Command-line arguments
     parser = ArgumentParser()
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="./data/eval5/eval3/Eval3_French.json", help="Path to dataset")
-    parser.add_argument("--image_folder", type=str, default="./data/processed_images", help="Path to image folder")
+    parser.add_argument("--dataset", type=str, help="Path to dataset")
+    parser.add_argument("--image_folder", type=str, help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda", help="Device to run the model on")
-    parser.add_argument("--save_path", type=str, default="./results/results_Gemma3_Eval3_French.json", help="Output file to save results")
+    parser.add_argument("--save_path", type=str, help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="local", help="Model source: 'local' or 'hf'")
-    parser.add_argument("--mode", type=str, default="single", choices=["single", "batch"], help="Single or batch processing")
 
 
     args = parser.parse_args()
@@ -267,3 +264,15 @@ if __name__ == "__main__":
     evaluate(model, processor, dataset, args.image_folder, args.save_path, language, args.mode)
 
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+# To run the script:
+# python gemma3_12b_eval3.py \
+#     --dataset <path_to_dataset_json> \
+#     --image_folder <path_to_image_folder> \
+#     --device cuda \
+#     --save_path <path_to_save_results_json> \
+#     --model_source local \
+
+# Note: The script assumes that the dataset JSON file contains keys for the question, options, and ground truth answer in the specified language format.
+# The dataset name should be in the format <dataset_name>_<language>.json, where <language> is the language code (e.g., "English", "Spanish" etc.).
+

@@ -102,8 +102,10 @@ def convert_to_lang_eval3(input_file_path, output_folder_path):
 # Main function
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Convert a JSON file to a JSON file with utf-8 encoding')
-    parser.add_argument('--input_folder_path', type=str, default="./eval5/evaluation/results/Eval3", help='The input folder path')
-    parser.add_argument('--output_folder_path', type=str, default="./eval5/evaluation/results/Eval3_decoded", help='The output folder path')
+    parser.add_argument('--input_folder_path', type=str, 
+                        default="./eval5/evaluation/results/Eval3", help='The input folder path')
+    parser.add_argument('--output_folder_path', type=str, 
+                        default="./eval5/evaluation/results/Eval3_decoded", help='The output folder path')
     args = parser.parse_args()
 
     # Get all files in input folder
@@ -120,3 +122,11 @@ if __name__ == "__main__":
         print(f"Converted {input_file}")
 
     print("Done")
+
+# To run the script, use the command:
+# python convert_to_lang_eval3.py \
+#     --input_folder_path <path_to_input_folder> \
+#     --output_folder_path <path_to_output_folder>
+
+# Note: Ensure that the input folder contains the JSON files to be processed and the output folder is where you want to save the processed files.
+# Note: This script assumes that the input JSON files are in a specific format and contain the necessary fields.

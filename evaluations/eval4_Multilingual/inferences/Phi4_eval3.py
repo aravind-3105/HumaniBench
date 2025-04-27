@@ -1,86 +1,54 @@
 import os
 import json
-import re
 import time
 import logging
+import re
 from argparse import ArgumentParser
 
 import torch
 from PIL import Image
 from tqdm import tqdm
-from transformers import (
-    AutoProcessor,
-    AutoModelForImageTextToText,
-    BitsAndBytesConfig,
-    set_seed
-)
+from transformers import AutoProcessor, AutoModelForCausalLM
 
-# Set a seed for reproducibility
-set_seed(45)
+# Model directory and Hugging Face model ID
+MODEL_DIR = "/model-weights/Phi-4-multimodal-instruct"  # Local model path
+HF_MODEL_ID = "microsoft/Phi-4-multimodal-instruct"       # Hugging Face Model ID
 
-# User settings and environment variables
-OFFLOAD_FOLDER = "" # Path to offload folder
-os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
-os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
-
-# Model parameters
-MAX_NEW_TOKENS = 256
-MODEL_DIR = "/model-weights/Llama-3.2-11B-Vision-Instruct/"  # Local model path
-HF_MODEL_ID = "meta-llama/Llama-3.2-11B-Vision-Instruct"       # Hugging Face Model ID
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Set environment variables for Hugging Face cache directories
+OFFLOAD_FOLDER = "" # Path to offload folder
+os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
+os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
 
-def load_model(model_source="local", quantized=False):
+
+def load_model(model_source="local"):
     """
-    Load the Llama 3.2 Vision model and its processor.
+    Load the Phi-4 Vision model and its processor.
 
     Args:
-        model_source (str): 'local' to load from a local directory; otherwise from Hugging Face.
-        quantized (bool): Whether to use 4-bit quantization for reduced memory usage.
+        model_source (str): 'local' to load from a local directory, otherwise load from Hugging Face.
 
     Returns:
-        tuple: (model, processor)
+        model: The loaded causal language model.
+        processor: The associated processor.
     """
-    logger.info(f"Loading Llama 3.2 Vision model from {'local' if model_source == 'local' else 'Hugging Face'}...")
+    source = "local directory" if model_source == "local" else "Hugging Face"
+    print(f"Loading Phi-4 Vision model from {source}...")
+
     model_path = MODEL_DIR if model_source == "local" else HF_MODEL_ID
 
-    # Load the processor
-    processor = AutoProcessor.from_pretrained(
+    model = AutoModelForCausalLM.from_pretrained(
         model_path,
-        trust_remote_code=True,
-        cache_dir=os.environ["TRANSFORMERS_CACHE"]
+        trust_remote_code=True,  # Required for Phi-4
+        torch_dtype="auto",      # Automatically selects best precision (FP16/BF16)
+        device_map="auto",       # Automatically assigns to GPU
+        _attn_implementation='eager'  # Default implementation
     )
-
-    if quantized:
-        logger.info("Using 4-bit quantization for efficient memory usage.")
-        bnb_config = BitsAndBytesConfig(
-            load_in_4bit=True,
-            bnb_4bit_use_double_quant=True,
-            bnb_4bit_quant_type="nf4",
-            bnb_4bit_compute_dtype=torch.bfloat16
-        )
-        model = AutoModelForImageTextToText.from_pretrained(
-            model_path,
-            torch_dtype=torch.bfloat16,
-            quantization_config=bnb_config,
-            device_map="auto",
-            offload_folder=OFFLOAD_FOLDER,
-            cache_dir=os.environ["TRANSFORMERS_CACHE"]
-        )
-    else:
-        logger.info("Using full-precision model (FP16).")
-        model = AutoModelForImageTextToText.from_pretrained(
-            model_path,
-            torch_dtype=torch.float16,
-            device_map="auto",
-            offload_folder=OFFLOAD_FOLDER,
-            cache_dir=os.environ["TRANSFORMERS_CACHE"]
-        )
-
-    logger.info("Model loaded successfully.")
+    processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
     return model, processor
 
 
@@ -118,6 +86,7 @@ def extract_answer_and_reason(text):
         tuple: (answer, reasoning) if extraction is successful, otherwise (text, None).
     """
     try:
+        # Attempt to extract a JSON substring from the text.
         json_start = text.find('{')
         json_end = text.rfind('}') + 1
         if json_start != -1 and json_end != -1:
@@ -130,7 +99,7 @@ def extract_answer_and_reason(text):
     except Exception:
         pass
 
-    # Fallback: extract using regex
+    # Fallback: extract using regex pattern.
     try:
         pattern = r'(?:\*\*Answer:\*\*|Answer:)\s*"?([^"\n]*)"?\s*(?:\*\*Reasoning:\*\*|Reasoning:)\s*"?([^"\n]*)"?'
         match = re.search(pattern, text)
@@ -150,9 +119,9 @@ def process_sample(model, processor, img_path, question, language, device):
 
     Args:
         model: The loaded language model.
-        processor: The associated processor.
+        processor: The corresponding processor.
         img_path (str): Path to the image file.
-        question (str): The question (with options) to be answered.
+        question (str): The question to be answered (with choices).
         language (str): Language for the prompt.
         device: Torch device to run the model on.
 
@@ -160,13 +129,12 @@ def process_sample(model, processor, img_path, question, language, device):
         str: The generated response or an error message.
     """
     try:
-        # Resize the image
+        # Resize the image (do not save the resized copy)
         image = resize_image(img_path)
         if image is None:
             return "Error: Could not process image"
 
         user_prompt = f"""Answer the question using one of the given choices based on the image in the {language} language:
-
         Question ({language}):
         {question}
 
@@ -176,37 +144,31 @@ def process_sample(model, processor, img_path, question, language, device):
 
         Do not provide any other extra information.
         """
-        # Construct conversation messages as required by the model
-        messages = [
-            {"role": "user", "content": [
-                {"type": "image"},
-                {"type": "text", "text": user_prompt}
-            ]}
-        ]
 
-        # Apply chat template to get the input text prompt
-        input_text = processor.apply_chat_template(messages, add_generation_prompt=True)
+        # Construct prompt with special tokens expected by the model
+        prompt = f"<|user|><|image_1|>\n{user_prompt}<|end|><|assistant|>"
 
-        # Prepare inputs with the resized image and the input text
-        inputs = processor(
-            images=image,
-            text=input_text,
-            add_special_tokens=False,
-            return_tensors="pt"
-        ).to(device)
+        # Prepare inputs and move them to the specified device
+        inputs = processor(prompt, image, return_tensors="pt").to(device)
 
-        # Generate the response
+        # Generate response
         with torch.no_grad():
             output = model.generate(
                 **inputs,
-                max_new_tokens=MAX_NEW_TOKENS,
+                max_new_tokens=256,
                 do_sample=False,
+                pad_token_id=processor.tokenizer.pad_token_id,
+                eos_token_id=processor.tokenizer.eos_token_id,
+                bos_token_id=processor.tokenizer.bos_token_id,
+                use_cache=True,
             )
 
-        # Decode the output and extract the assistant response
-        predicted_answer = processor.decode(output[0], skip_special_tokens=True)
-        # Extract the text after "assistant" token (if present)
-        predicted_answer = predicted_answer[predicted_answer.find("assistant") + 9:]
+        # Remove input tokens from the output and decode the response
+        generated_ids = output[:, inputs["input_ids"].shape[1]:]
+        predicted_answer = processor.batch_decode(
+            generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
+        )[0]
+
         return predicted_answer if predicted_answer else "No answer generated"
     except Exception as e:
         logger.error(f"Error processing {img_path}: {e}")
@@ -219,7 +181,7 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
 
     Args:
         model: The loaded language model.
-        processor: The associated processor.
+        processor: The corresponding processor.
         dataset (list): List of data samples.
         image_folder (str): Directory containing images.
         save_path (str): File path to save the final results.
@@ -230,9 +192,10 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
         None
     """
     results = []
-    logger.info("Starting evaluation...")
+    logger.info(f"Starting evaluation...")
     prev_path = ""
 
+    # Process each sample with a progress bar.
     with tqdm(total=len(dataset), unit="sample") as pbar:
         for i, data in enumerate(dataset):
             img_path = os.path.join(image_folder, f"{data['ID']}.jpg")
@@ -241,7 +204,7 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
                 pbar.update(1)
                 continue
 
-            # Dynamically construct keys based on language
+            # Define keys dynamically based on language.
             q_key = f"Question({language})"
             o_key = f"Options({language})"
             a_key = f"Answer({language})"
@@ -260,13 +223,12 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
                     "Predicted_Answer": None,
                     "Predicted_Reasoning": None,
                     "Ground_Truth_Answer": data[a_key],
-                    "Ground_Truth_Reasoning": data[r_key],
+                    "Ground_Truth_Reasoning": data.get(r_key, None),
                     "Attribute": data["Attribute"]
                 })
                 pbar.update(1)
                 continue
 
-            # Combine question and options for processing
             question_with_choices = data[q_key] + "\n" + data[o_key]
             response = process_sample(
                 model,
@@ -284,11 +246,11 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
                 "Predicted_Answer": answer,
                 "Predicted_Reasoning": reasoning,
                 "Ground_Truth_Answer": data[a_key],
-                "Ground_Truth_Reasoning": data[r_key],
+                "Ground_Truth_Reasoning": data.get(r_key, None),
                 "Attribute": data["Attribute"]
             })
 
-            # Save intermediate results every 10 samples
+            # Save intermediate results every 10 samples.
             if i % 10 == 0:
                 intermediate_results_path = save_path.replace(
                     ".json", f"_intermediate_{i}_{time.strftime('%Y%m%d_%H%M%S')}.json"
@@ -302,7 +264,7 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
 
             pbar.update(1)
 
-    # Save final results to a JSON file
+    # Save final results.
     with open(save_path, "w") as f:
         json.dump(results, f, indent=4, default=str)
     logger.info(f"Results saved to {save_path}.")
@@ -311,50 +273,56 @@ def evaluate(model, processor, dataset, image_folder, save_path, language):
 if __name__ == "__main__":
     start_time = time.time()
 
-    # Command-line arguments
+    # Command-line arguments.
     parser = ArgumentParser()
     parser.add_argument("--dataset", type=str,
-                        default="./data/eval5/eval3/Eval3_French.json",
                         help="Path to dataset")
     parser.add_argument("--image_folder", type=str,
-                        default="./data/processed_images",
                         help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="./results/results_Llama_Eval3_French.json",
                         help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="local",
                         help="Model source: 'local' or 'hf'")
     parser.add_argument("--num_samples", type=int, default=0,
                         help="Number of samples to process")
-    parser.add_argument("--quantized", type=bool, default=False,
-                        help="Use quantized model")
     args = parser.parse_args()
 
-    # Define device
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    # Define device globally.
+    device = torch.device(args.device if torch.cuda.is_available() else 'cpu')
     logger.info(f"Using device: {device}")
 
-    # Determine model source (local vs Hugging Face)
-    model_source = "huggingface" if args.model_source == "hf" else "local"
-    logger.info(f"Model source: {model_source}")
-
-    # Load model and processor
-    model, processor = load_model(model_source, quantized=args.quantized)
-    model.to(device)
-
-    # Determine language from dataset filename (assumes language is after the last '_' and before '.json')
+    # Determine language from dataset filename (assumes language is after the last '_' and before '.json').
     language = args.dataset.split("_")[-1].split(".")[0]
     logger.info(f"Processing dataset in {language} language...")
 
-    # Load dataset
+    # Load model and processor.
+    model, processor = load_model(args.model_source)
+    model.to(device)
+
+    # Load dataset.
     with open(args.dataset, "r") as f:
         dataset = json.load(f)
+
     if args.num_samples > 0:
         dataset = dataset[args.num_samples:]
+
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
-    # Run evaluation
+    # Run evaluation.
     evaluate(model, processor, dataset, args.image_folder, args.save_path, language)
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+# To run the script:
+# python Phi4_eval3.py \
+#     --dataset <path_to_dataset_json> \
+#     --image_folder <path_to_image_folder> \
+#     --device <cuda_or_cpu> \
+#     --save_path <output_file_path> \
+#     --model_source <local_or_hf> \
+#     --num_samples <number_of_samples_to_process>
+
+# Note: The script assumes that the dataset JSON file contains keys for questions, answers, and options in the specified language.
+# The dataset file name should be in the format "Eval3_<language>.json" where <language> is the language of the dataset.
+# The script also assumes that the images are named according to the IDs in the dataset and are located in the specified image folder.

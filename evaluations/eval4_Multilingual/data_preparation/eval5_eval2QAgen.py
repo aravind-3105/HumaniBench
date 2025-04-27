@@ -218,3 +218,10 @@ if __name__ == "__main__":
 
     # Submit batches to OpenAI's Batch API
     submit_batches(client, batch_files)
+
+# To run the script:
+# python eval5_eval2QAgen.py \
+#     --data_path <path_to_your_json_file> \
+#     --language <language> \
+#     --openai_api_key <your_openai_api_key> \
+#     --image_folder <path_to_your_image_folder>

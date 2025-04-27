@@ -198,15 +198,12 @@ if __name__ == "__main__":
     # Parse command-line arguments
     parser = ArgumentParser()
     parser.add_argument("--dataset", type=str,
-                        default="./data/eval5/eval2/Eval2_French.json",
                         help="Path to dataset")
     parser.add_argument("--image_folder", type=str,
-                        default="./data/processed_images",
                         help="Path to image folder")
     parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run the model on")
     parser.add_argument("--save_path", type=str,
-                        default="./results/results_Phi4_Eval2_French.json",
                         help="Output file to save results")
     parser.add_argument("--model_source", type=str, default="local",
                         help="Model source: 'local' or 'hf'")
@@ -238,3 +235,16 @@ if __name__ == "__main__":
     # Run evaluation
     evaluate(model, processor, dataset, args.image_folder, args.save_path, language)
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+
+# To run the script:
+# python Phi4_eval2.py \
+#     --dataset <path_to_dataset_json> \
+#     --image_folder <path_to_image_folder> \
+#     --device <cuda_or_cpu> \
+#     --save_path <output_file_path> \
+#     --model_source <local_or_hf> \
+#     --num_samples <number_of_samples_to_process>
+
+# Note: Ensure that the model weights and Hugging Face cache directories are correctly set.
+# The dataset file name should be in the format "Eval2_<language>.json" where <language> is the language of the dataset.
