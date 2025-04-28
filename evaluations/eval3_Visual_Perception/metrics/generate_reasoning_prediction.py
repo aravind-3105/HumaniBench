@@ -90,8 +90,13 @@ def process_questions(input_file, output_file):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process MCQ questions and score reasoning.")
-    parser.add_argument("-i", "--input", required=True, help="Path to the input JSON file")
-    parser.add_argument("-o", "--output", required=True, help="Path to the output JSON file")
+    parser.add_argument("--input", required=True, help="Path to the input JSON file")
+    parser.add_argument("--output", required=True, help="Path to the output JSON file")
     args = parser.parse_args()
 
     process_questions(args.input, args.output)
+
+# To run the script, use the following command:
+# python generate_reasoning_prediction.py \
+#     --input <path_to_input_json> \
+#     --output <path_to_output_json>

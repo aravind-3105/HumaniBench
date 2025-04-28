@@ -3,6 +3,7 @@
 import os
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import argparse
 
 def extract_options(input_json, answer_column, new_column):
     """Load dataset and extract first letter of the answer if it's A, B, C, or D."""
@@ -98,12 +99,27 @@ def process_all_models(result_folder, eval3_dataset):
     print(results_df)
     return results_df
 
-# Example usage
-parent_folder = "./results"
-result_folder = os.path.join(parent_folder, "eval3")
-eval3_dataset = "./data/eval3/QA_Eval3.json"
-results_df = process_all_models(result_folder, eval3_dataset)
+# # Example usage
+# parent_folder = "./results"
+# result_folder = os.path.join(parent_folder, "eval3")
+# eval3_dataset = "./data/eval3/QA_Eval3.json"
+# results_df = process_all_models(result_folder, eval3_dataset)
 
-# Save results to CSV
-results_df.to_csv("stat_results.csv", index=False)
-print("Results saved to stat_results.csv")
+# # Save results to CSV
+# results_df.to_csv("stat_results.csv", index=False)
+# print("Results saved to stat_results.csv")
+
+if __name__="__main__":
+    parser = argparse.ArgumentParser(description="Compute statistics for evaluation results.")
+    parser.add_argument("--result_folder", type=str, default="./results/eval3", help="Path to the result folder.")
+    parser.add_argument("--eval3_dataset", type=str, default="./data/eval3/QA_Eval3.json", help="Path to the Eval3 dataset.")
+    parser.add_argument("--output_csv", type=str, default="stat_results.csv", help="Output CSV file name.")
+    args = parser.parse_args()
+    parent_folder = args.result_folder
+    result_folder = os.path.join(parent_folder, "eval3")
+    eval3_dataset = args.eval3_dataset
+    results_df = process_all_models(result_folder, eval3_dataset)
+
+    # Save results to CSV
+    results_df.to_csv(args.output_csv, index=False)
+    print(f"Results saved to {args.output_csv}")

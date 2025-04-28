@@ -227,7 +227,7 @@ if __name__ == "__main__":
         dataset = json.load(f)
 
     # Select 20 samples for testing
-    dataset = dataset[:20]
+    # dataset = dataset[:20]
     logger.info(f"Loaded dataset with {len(dataset)} samples.")
 
     # Run evaluation
