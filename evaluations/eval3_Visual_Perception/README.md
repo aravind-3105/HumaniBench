@@ -41,17 +41,6 @@ Scripts to run evaluation across multiple VQA models. Each script shares a commo
 - Save generated answers and reasoning.
 - Handles missing or corrupted samples gracefully.
 
-```bash
-python aya_vision_8b.py \
-    --dataset <path_to_dataset_json> \
-    --image_folder <path_to_image_folder> \
-    --device <cuda_or_cpu> \
-    --save_path <path_to_save_results_json> \
-    --model_source <local_or_hf> \
-    --mode <single_or_batch>
-```
-> Refer to the respective model's inference file for model-specific arguments if needed.
-
 ## 3. Metric Computation (metrics/compute_stat_eval.py)
 - Computes Accuracy, Precision, Recall, and F1 Score.
 - Evaluates both:
@@ -60,18 +49,11 @@ python aya_vision_8b.py \
 - Detects and flags missing answers or missing label coverage.
 - Merges predicted and ground truth answers based on ID and Attribute.
 
-```bash
-python metrics/compute_stat_eval.py \
-    --result_folder <path_to_model_outputs_folder> \
-    --eval3_dataset <path_to_ground_truth_dataset_json> \
-    --output_csv <path_to_save_summary_csv>
-```
 
 ## 4. Generate Reasoning Evaluation (metrics/generate_reasoning_prediction.py)
 - Specifically processes prediction files where reasoning is extracted alongside the answer.
 - Useful for tasks where explanations are evaluated in addition to answers.
 > Run it similarly as compute_stat_eval.py.
-
 
 
 # How to Run
