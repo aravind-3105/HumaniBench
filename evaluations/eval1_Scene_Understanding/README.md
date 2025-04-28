@@ -1,4 +1,4 @@
-# Eval 7: Scene Understanding and Social Bias Evaluation
+# Eval 1: Scene Understanding and Social Bias Evaluation
 
 This task evaluates visual models on their ability to understand scenes and infer social categories (such as gender, age, ethnicity, occupation, and sport participation) with rich, nuanced reasoning. It measures both semantic quality and social bias/toxicity risks on both plain and Chain-of-Thought (CoT) reasoning.
 
