@@ -10,14 +10,7 @@ from huggingface_hub import login
 from transformers import AutoProcessor, AutoModelForImageTextToText
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace authentication token")
-    parser.add_argument("--model_path", type=str, default="CohereForAI/aya-vision-8b", help="Model ID for Aya-Vision")
-    parser.add_argument("--csv_file", type=str, required=True, help="Path to your combined.csv")
-    parser.add_argument("--results_file", type=str, default="./results/caption_results.json", help="Output JSON file")
-    parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
-    args = parser.parse_args()
+def main(args):
 
     # Log in to Hugging Face
     login(token=args.hf_token)
@@ -128,4 +121,23 @@ def main():
     print(f"Processed {len(results)} images")
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser(description="Run inference with Aya Vision and save captions.")
+    parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace authentication token")
+    parser.add_argument("--model_path", type=str, default="CohereForAI/aya-vision-8b", help="Model ID for Aya-Vision")
+    parser.add_argument("--csv_file", type=str, required=True, help="Path to your combined.csv")
+    parser.add_argument("--results_file", type=str, default="./results/caption_results.json", help="Output JSON file")
+    parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
+    args = parser.parse_args()
+
+    main(args)
+
+# This script is designed to run inference using the Aya Vision model from Hugging Face.
+# It processes images, generates captions based on prompts, and saves the results in a JSON file.
+
+# To run the script, use the following command:
+# python aya_vision.py \
+#     --hf_token <your_huggingface_token> \
+#     --model_path CohereForAI/aya-vision-8b \
+#     --csv_file <path_to_your_combined_csv> \
+#     --results_file <path_to_your_results_json> \
+#     --image_folder <path_to_your_image_folder>

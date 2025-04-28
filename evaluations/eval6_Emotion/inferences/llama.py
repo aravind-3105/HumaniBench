@@ -53,17 +53,7 @@ def generate_caption(model, processor, image, prompt, device):
         return "Error"
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace token")
-    parser.add_argument("--model_path", type=str, default="deepseek-ai/deepseek-vl2-tiny", help="Hugging Face model ID or local path")
-    parser.add_argument("--csv_file", type=str, required=True, help="CSV file with image data")
-    parser.add_argument("--results_folder", type=str, default="./results", help="Folder to save results")
-    parser.add_argument("--results_file", type=str, default="caption_results_llama.json", help="Output JSON file")
-    parser.add_argument("--image_folder", type=str, required=True, help="Folder containing images")
-    parser.add_argument("--model_source", type=str, default="hf", help="'local' or 'hf'")
-    parser.add_argument("--quantized", action="store_true", help="Use 4-bit quantization")
-    args = parser.parse_args()
+def main(args):
 
     # Log in to Hugging Face if using remote model.
     login(token=args.hf_token)
@@ -162,4 +152,36 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser()
+    parser.add_argument("--hf_token", type=str, 
+                        required=True, help="HuggingFace token")
+    parser.add_argument("--model_path", type=str, 
+                        default="meta-llama/Llama-3.2-11B-Vision-Instruct", help="Model path")
+    parser.add_argument("--csv_file", type=str, 
+                        required=True, help="CSV file with image data")
+    parser.add_argument("--results_folder", type=str, 
+                        default="./results", help="Folder to save results")
+    parser.add_argument("--results_file", type=str, 
+                        default="caption_results_llama.json", help="Output JSON file")
+    parser.add_argument("--image_folder", type=str, 
+                        required=True, help="Folder containing images")
+    parser.add_argument("--model_source", type=str, 
+                        default="hf", help="'local' or 'hf'")
+    parser.add_argument("--quantized", action="store_true", help="Use 4-bit quantization")
+    args = parser.parse_args()
+    main(args)
+
+# This script is designed to run inference using the LLaMA model from Hugging Face.
+# It generates captions for images based on prompts and saves the results in a JSON file.
+
+# To run the script, use the following command:
+# python llama.py \
+#     --hf_token YOUR_HUGGINGFACE_TOKEN \
+#     --model_path meta-llama/Llama-3.2-11B-Vision-Instruct \
+#     --csv_file <path_to_your_combined.csv> \
+#     --results_folder <path_to_results_folder> \
+#     --results_file <output_json_filename> \
+#     --image_folder <path_to_image_folder> \
+#     --model_source <local/hf> \
+#     --quantized
+

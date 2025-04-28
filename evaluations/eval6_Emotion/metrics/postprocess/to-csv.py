@@ -23,14 +23,7 @@ def write_to_csv(data, csv_filename, fieldnames):
             }
             writer.writerow(row)
 
-def main():
-    # Set up argument parsing
-    parser = argparse.ArgumentParser(description="Convert JSON data to CSV format.")
-    parser.add_argument("json_filename", help="Path to the input JSON file")
-    parser.add_argument("csv_filename", help="Path to the output CSV file")
-    
-    args = parser.parse_args()
-    
+def main(args):
     # Define column names for CSV
     fieldnames = [
         "id", 
@@ -48,4 +41,18 @@ def main():
     print(f"CSV file created at: {args.csv_filename}")
 
 if __name__ == "__main__":
-    main()
+    # Set up argument parsing
+    parser = argparse.ArgumentParser(description="Convert JSON data to CSV format.")
+    parser.add_argument("--json_filename", type=str, default="data.json", help="Path to the input JSON file")
+    parser.add_argument("--csv_filename", type=str, default="output.csv", help="Path to the output CSV file")
+    
+    args = parser.parse_args()
+    main(args)
+
+# This script converts a JSON file containing image paths and captions into a CSV file.
+# It extracts relevant fields and writes them into a structured CSV format.
+
+# To run the script, use the following command:
+# python to-csv.py \
+#     --json_filename <path_to_input_json> \
+#     --csv_filename <path_to_output_csv>

@@ -4,6 +4,8 @@ import csv
 import asyncio
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
+import argparse
+import sys
 
 dotenv_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(dotenv_path)
@@ -38,9 +40,7 @@ async def process_image(image_path, semaphore):
             print(f"Error processing {image_path}: {e}")
             return (os.path.basename(image_path), None)
 
-async def main():
-    image_dir = "./data/eval6/empathy_dataset/resized"
-    save_path = "simple_captions_batched.csv"
+async def main(image_dir, save_path):
     
     # Limit concurrency to 5 requests at a time
     semaphore = asyncio.Semaphore(5)
@@ -83,5 +83,19 @@ async def main():
             file.flush()
             print(f"Saved final batch of {len(buffer)} captions")
 
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    parser = argparse.ArgumentParser(description="Process images and generate captions.")
+    parser.add_argument("--image_dir", type=str, required=True, help="Path to the directory containing images.")
+    parser.add_argument("--save_path", type=str, required=True, help="Path to save the output CSV file.")
+    args = parser.parse_args()
+    
+    asyncio.run(main(args.image_dir, args.save_path))
+
+# To run this script, use the command:
+# python generate_captions.py --image_dir ./empathy_dataset/resized --save_path simple_captions_batched.csv
+
+
+# python generate_captions.py \
+# --image_dir <path_to_your_image_directory> \
+# --save_path <path_to_save_your_csv_file>

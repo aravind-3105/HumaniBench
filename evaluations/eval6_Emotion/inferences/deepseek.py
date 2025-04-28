@@ -62,17 +62,7 @@ def generate_caption(model, tokenizer, processor, image, prompt):
         print(f"Error generating caption: {e}")
         return "Error"
 
-def main():
-    # Argument parsing
-    parser = ArgumentParser()
-    parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace authentication token")
-    parser.add_argument("--model_path", type=str, default="deepseek-ai/deepseek-vl2-tiny")
-    parser.add_argument("--csv_file", type=str, required=True, help="Path to combined.csv")
-    parser.add_argument("--results_file", type=str, default="deepseek_results.json", help="Output JSON file")
-    parser.add_argument("--results_folder", type=str, default="./results", help="Folder to save results")
-    parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
-    args = parser.parse_args()
-
+def main(args):
     # Log in to HuggingFace
     login(token=args.hf_token)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -146,4 +136,25 @@ def main():
     print(f"Processed {len(results)} images.")
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser(description="Run DeepSeek-VL2 inference and save captions.")
+    parser.add_argument("--hf_token", type=str, required=True, help="HuggingFace authentication token")
+    parser.add_argument("--model_path", type=str, default="deepseek-ai/deepseek-vl2-tiny", help="Model path for DeepSeek")
+    parser.add_argument("--csv_file", type=str, required=True, help="Path to combined.csv")
+    parser.add_argument("--results_file", type=str, default="deepseek_results.json", help="Output JSON filename")
+    parser.add_argument("--results_folder", type=str, default="./results", help="Folder to save results")
+    parser.add_argument("--image_folder", type=str, required=True, help="Path to folder containing images")
+    args = parser.parse_args()
+
+    main(args)
+
+# This script is designed to run inference using the DeepSeek-VL2 model from Hugging Face.
+# It processes images, generates captions based on prompts, and saves the results in a JSON file.
+
+# To run the script, use the following command:
+# python deepseek.py \
+#     --hf_token YOUR_HUGGINGFACE_TOKEN \
+#     --model_path deepseek-ai/deepseek-vl2-tiny \
+#     --csv_file path/to/combined.csv \
+#     --results_file deepseek_results.json \
+#     --results_folder ./results \
+#     --image_folder path/to/images

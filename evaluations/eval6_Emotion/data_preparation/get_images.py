@@ -4,9 +4,12 @@ import pandas as pd
 import time
 import random
 import hashlib
+import argparse
 from newspaper import Article, Config
 from PIL import Image
 from io import BytesIO
+from datetime import timezone, datetime
+
 
 # Configuration Constants
 USER_AGENT = '' # User-Agent string for requests
@@ -167,9 +170,9 @@ def process_article(url, category, keyword):
     except Exception as e:
         print(f"Article processing failed: {str(e)}")
         return None
-
-def main():
-    csv_path = os.path.join(BASE_DIR, "empathy_news.csv")
+    
+def main(csv_path="empathy_news.csv"):
+    csv_path = os.path.join(BASE_DIR, csv_path)
     processed_urls = set()
     
     # Initialize DataFrame with proper schema
@@ -235,5 +238,16 @@ def main():
             
             time.sleep(random.uniform(15, 30))
 
+
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Download empathy-related news articles and images.")
+    parser.add_argument("--output_csv", type=str, required=True, help="Full path to output CSV (e.g., empathy_news.csv)")
+    args = parser.parse_args()
+    
+    main(args.base_dir, args.user_agent, args.gdelt_api, args.output_csv)
+
+# This script is designed to download empathy-related news articles and images from the GDELT API, process them, and save the results in a CSV file. It includes error handling, rate limiting, and image validation to ensure robustness.
+
+# To run this script, use the command:
+# python get_images.py \
+# --output_csv <path_to_output_csv> \

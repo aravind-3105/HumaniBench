@@ -17,17 +17,7 @@ os.environ["HF_HOME"] = "" #Path where you want to store the huggingface cache
 os.environ["TRANSFORMERS_CACHE"] = "" #Path where you want to store the transformers cache
 
 
-def main():
-    parser = ArgumentParser()
-    parser.add_argument("--hf_token", type=str, required=True)
-    parser.add_argument("--phi4_model", type=str, default="microsoft/Phi-4-multimodal-instruct")
-    parser.add_argument("--csv_file", type=str, required=True)
-    parser.add_argument("--results_folder", type=str, default="./results")
-    os.makedirs(args.results_folder, exist_ok=True)
-    parser.add_argument("--results_file", type=str, default="phi4_results.json")
-    parser.add_argument("--image_folder", type=str, required=True)
-    args = parser.parse_args()
-
+def main(args):
     # Log in to Hugging Face
     login(token=args.hf_token)
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -126,4 +116,26 @@ def main():
     print(f"Completed processing {len(results)} images")
 
 if __name__ == "__main__":
-    main()
+    parser = ArgumentParser()
+
+    parser.add_argument("--hf_token", type=str, required=True)
+    parser.add_argument("--phi4_model", type=str, default="microsoft/Phi-4-multimodal-instruct")
+    parser.add_argument("--csv_file", type=str, required=True)
+    parser.add_argument("--results_folder", type=str, default="./results")
+    parser.add_argument("--results_file", type=str, default="phi4_results.json")
+    parser.add_argument("--image_folder", type=str, required=True)
+    args = parser.parse_args()
+    os.makedirs(args.results_folder, exist_ok=True)
+    main(args)
+
+# This script is designed to run inference using the Phi-4 model for image captioning.
+# It processes images and generates captions based on the provided CSV file.
+
+# To run the script, use the following command:
+# python phi4.py \
+#     --hf_token <your_huggingface_token> \
+#     --phi4_model microsoft/Phi-4-multimodal-instruct \
+#     --csv_file <path_to_your_combined_csv> \
+#     --results_folder <path_to_your_results_folder> \
+#     --results_file <path_to_your_results_json> \
+#     --image_folder <path_to_your_image_folder>
