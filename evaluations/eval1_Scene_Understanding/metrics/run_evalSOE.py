@@ -105,3 +105,8 @@ if processed_count % SAVE_INTERVAL != 0:
     temp_df.to_csv(OUTPUT_CSV, mode='a', header=header, index=False)
 
 print("Evaluation complete. Final results saved to", OUTPUT_CSV)
+
+# To run this script, use the following command:
+# python run_evalSOE.py \
+#     --input <path_to_input_csv> \
+#     --output <path_to_output_csv>

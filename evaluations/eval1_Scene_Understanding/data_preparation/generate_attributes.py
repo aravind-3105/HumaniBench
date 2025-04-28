@@ -122,3 +122,13 @@ if __name__ == "__main__":
 
     # Generate attributes
     generate_attributes_openai(dataloader, args.openai_api_key, args.save_path, existing_attributes)
+
+
+# To run this script, use the following command:
+# python generate_attributes.py \
+#     --dataset_name <dataset_name> \
+#     --split <split> \
+#     --batch_size <batch_size> \
+#     --openai_api_key <your_openai_api_key> \
+#     --save_path <path_to_save_attributes> \
+#     --attributes_file <path_to_existing_attributes_json>

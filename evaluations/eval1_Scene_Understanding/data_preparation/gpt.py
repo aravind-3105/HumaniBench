@@ -7,13 +7,13 @@ from datasets import load_dataset
 from PIL import Image
 import time
 import logging
+import argparse
+from argparse import ArgumentParser
+from tqdm import tqdm
+from typing import List, Dict
 
 # ================= Configuration =================
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # Get API key from environment variable
-HF_DATASET_NAME = os.getenv("HF_DATASET_NAME", "vector-institute/nmb-plus-clean")  # Default dataset name
-HF_CACHE_DIR = os.getenv("HF_CACHE_DIR", "./huggingface_cache")  # Default cache directory
-SELECTED_SAMPLES_PATH = os.getenv("SELECTED_SAMPLES_PATH", "/path/to/selected_samples.json")
-RESULTS_PATH = os.getenv("RESULTS_PATH", "/path/to/results.json")
 
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", 3))  # Max retries for API calls
 RETRY_DELAY = int(os.getenv("RETRY_DELAY", 5))  # Delay between retries in seconds
@@ -127,7 +127,7 @@ def save_json_file(data: dict, file_path: str):
         logger.error(f"Error saving file {file_path}: {e}")
 
 # ================ Main Execution =================
-def process_samples(selected_samples, dataset, questions):
+def process_samples(selected_samples, dataset, questions, results_path):
     results = []
     processed_ids = {sample["id"] for sample in results}
 
@@ -198,7 +198,7 @@ def process_samples(selected_samples, dataset, questions):
                                     logger.error(f"Failed after {MAX_RETRIES} attempts for {category}: {str(e)}")
 
             results.append(sample_answers)
-            save_json_file(results, RESULTS_PATH)
+            save_json_file(results, results_path)
 
         except Exception as e:
             logger.error(f"Critical error processing {sample_id}: {str(e)}")
@@ -206,12 +206,33 @@ def process_samples(selected_samples, dataset, questions):
     logger.info("Processing complete. Final results saved.")
 
 if __name__ == "__main__":
+    parser = ArgumentParser()
+    parser.add_argument("--hf_dataset_name", type=str, default="vector-institute/nmb-plus-clean", help="HuggingFace dataset name")
+    parser.add_argument("--hf_cache_dir", type=str, default="./huggingface_cache", help="HuggingFace cache directory")
+    parser.add_argument("--selected_samples_path", type=str, help="Path to selected samples JSON file")
+    parser.add_argument("--results_path", type=str, help="Path to save results JSON file")
+
+    args = parser.parse_args()
+    HF_DATASET_NAME = args.hf_dataset_name
+    HF_CACHE_DIR = args.hf_cache_dir
+    selected_samples_path = args.selected_samples_path
+    results_path = args.results_path
+
     # Load dataset and selected samples
     dataset = load_dataset(HF_DATASET_NAME, cache_dir=HF_CACHE_DIR, split="train")
-    selected_samples = load_json_file(SELECTED_SAMPLES_PATH)
+    selected_samples = load_json_file(selected_samples_path)
 
     # Load questions
     questions = load_questions()
 
     # Process samples
-    process_samples(selected_samples, dataset, questions)
+    process_samples(selected_samples, dataset, questions, results_path)
+
+
+# To run this script, use the following command:
+# python generate_attributes.py \
+#     --hf_dataset_name <dataset_name> \
+#     --hf_cache_dir <cache_directory> \
+#     --selected_samples_path <path_to_selected_samples> \
+#     --results_path <path_to_results>
+

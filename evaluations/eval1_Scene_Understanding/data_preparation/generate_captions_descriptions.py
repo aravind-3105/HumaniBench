@@ -159,3 +159,12 @@ if __name__ == "__main__":
 
     # Generate captions
     generate_captions(model, dataloader, processor, device, args.save_path)
+
+# # To run this script, use the following command:
+# # python generate_captions_descriptions.py \
+# #     --dataset_name <dataset_name> \
+# #     --split <split> \
+# #     --batch_size <batch_size> \
+# #     --save_path <path_to_save_captions> \
+# #     --hf_token <your_huggingface_token> \
+# #     --model_path <path_to_model>

@@ -6,12 +6,14 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description="Consolidation of Results")
     parser.add_argument("--input", type=str, required=True, help="Path to the input CSV file")
-    #parser.add_argument("--output", type=str, required=True, help="Path to the output CSV file")
+    parser.add_argument("--output", type=str, required=True, help="Path to the output CSV file")
+    parser.add_argument("--ground_truth", type=str, required=True, help="Path to the ground truth CSV file")
     args = parser.parse_args()
     
     # Load your CSVs
-    ground_truth_csv = "./data/eval1/gpt4o-plain_version_cleaned.csv"
+    ground_truth_csv = args.ground_truth
     predicted_csv    = args.input
+  
     
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
@@ -39,8 +41,14 @@ def main():
     print(f"Average BERTScore F1: {average_F1:.3f}")
     
     # Optionally, save the merged results with scores for further analysis.
-    df_merged.to_csv("merged_with_bert_score.csv", index=False)
+    df_merged.to_csv(args.output, index=False)
     # print("Saved merged results with BERTScore to merged_with_bert_score.csv")
 
 if __name__ == "__main__":
     main()
+
+# To run this script, use the following command:
+# python consolidate_results.py \
+#     --input <path_to_input_csv> \
+#     --output <path_to_output_csv> \
+#     --ground_truth <path_to_ground_truth_csv>

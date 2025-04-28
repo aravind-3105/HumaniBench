@@ -182,3 +182,11 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# To run the script, use the following command:
+# python aya_vision_inference.py \
+#     --hf_token <your_huggingface_token> \
+#     --model_path <model_path> \
+#     --results_file <results_file> \
+#     --dataset_name <dataset_name> \
+#     --selected_samples <selected_samples_file>
