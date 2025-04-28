@@ -134,9 +134,19 @@ def main(input_path, output_path=None, batch_size=1000):
     return
 
 if __name__ == "__main__":
-    parent_folder = ""  # Adjust if needed
-    folder = os.path.join(parent_folder, "eval2_cleaned_csv")
-    output_folder = os.path.join(parent_folder, "eval2_statistical_scores")
+    parser = argparse.ArgumentParser(description="Evaluate model predictions and compute metrics.")
+    parser.add_argument("--input", type=str, required=True, help="Path to the input CSV file.")
+    parser.add_argument("--output", type=str, help="Path to the output JSON file.")
+    parser.add_argument("--batch_size", type=int, default=1000, help="Batch size for processing.")
+    args = parser.parse_args()
+    input_path = args.input
+    output_path = args.output
+    batch_size = args.batch_size
+    # Check if the input file exists
+    if not os.path.exists(input_path):
+        raise FileNotFoundError(f"Input file {input_path} does not exist.")
+    folder = args.input_path
+    output_folder = args.output_path
     
     # Ensure output folder exists
     os.makedirs(output_folder, exist_ok=True)
@@ -151,3 +161,11 @@ if __name__ == "__main__":
         output_file_path = os.path.join(output_folder, output_file_name + ".json")
         main(file_path, output_file_path)
         time.sleep(3)
+
+# This script is designed to evaluate model predictions in a CSV file and compute evaluation metrics in batches.
+
+# To run the script:
+# python eval2_stat_scores.py \
+# --input <path_to_input_csv> \
+# --output <path_to_output_json> \
+# --batch_size <batch_size>

@@ -154,3 +154,11 @@ if __name__ == "__main__":
     
     evaluate(model, processor, dataset, args.image_folder, args.save_path)
     logger.info(f"Total time taken: {time.time() - start_time:.2f} seconds")
+
+# To run this script:
+# python aya_vision_8b.py \
+# --dataset <path_to_dataset_json> \
+# --image_folder <path_to_image_folder> \
+# --device <cuda_or_cpu> \
+# --save_path <path_to_save_results_json> \
+# --model_source <local_or_hf>

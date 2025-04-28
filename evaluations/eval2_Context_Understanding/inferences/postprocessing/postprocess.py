@@ -73,3 +73,9 @@ if __name__ == "__main__":
         print(f"Cleaned data saved to {args.output_file}")
     else:
         print(f"Input file {args.input_file} not found.")
+
+# To run this script:
+# python postprocess.py \
+# --input_file <path_to_input_json> \
+# --output_file <path_to_output_json> \
+# --model_type <model_type>

@@ -1,6 +1,7 @@
 import os
 import json
 import pandas as pd
+import argparse
 
 def convert_json_to_csv(input_folder, output_folder):
     """
@@ -29,7 +30,12 @@ def convert_json_to_csv(input_folder, output_folder):
             print(f"Saved: {file.replace('.json', '.csv')}")
 
 if __name__ == "__main__":
-    parent_folder = ""  # Adjust if necessary
-    input_folder_path = os.path.join(parent_folder, "eval2_cleaned")
-    output_folder = os.path.join(parent_folder, "eval2_cleaned_csv")
-    convert_json_to_csv(input_folder_path, output_folder)
+    parser = argparse.ArgumentParser(description='Convert JSON files to CSV.')
+    parser.add_argument('input_folder', type=str, help='Input folder containing JSON files.')
+    parser.add_argument('output_folder', type=str, help='Output folder to save CSV files.')
+    args = parser.parse_args()
+    convert_json_to_csv(args.input_folder, args.output_folder)
+
+# To run this script, use the command line:
+# python convert_to_csv.py <input_folder> <output_folder>
+

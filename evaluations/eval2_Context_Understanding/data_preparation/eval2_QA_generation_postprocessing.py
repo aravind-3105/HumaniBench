@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import re
+import argparse
 
 
 def load_metadata(metadata_file):
@@ -84,10 +85,23 @@ def postprocess_csv_with_metadata(input_csv, metadata_json, output_json):
         print(f"Error processing the file: {e}")
 
 if __name__ == "__main__":
+    # Argument parser
+    parser = argparse.ArgumentParser(description="Postprocess CSV with metadata.")
+    parser.add_argument("--input_csv", type=str, required=True, help="Path to the input CSV file.")
+    parser.add_argument("--metadata_json", type=str, required=True, help="Path to the metadata JSON file.")
+    parser.add_argument("--output_json", type=str, required=True, help="Path to the output JSON file.")
+    args = parser.parse_args()
     # File paths
-    input_csv = "./eval2_llama_generated_questions.csv"  # Input CSV file
-    metadata_json = "./eval2_processed_metadata.json"    # Metadata JSON file
-    output_json = "./eval2_processed_questions_with_metadata.json"  # Output JSON file
-
+    input_csv = args.input_csv  # Input CSV file
+    metadata_json = args.metadata_json  # Metadata JSON file
+    output_json = args.output_json  # Output JSON file
     # Postprocess the CSV file using metadata
     postprocess_csv_with_metadata(input_csv, metadata_json, output_json)
+
+# The script loads metadata from a JSON file, processes a CSV file containing generated questions, and saves the processed data to a new JSON file. It extracts relevant information such as question, answer, and image description, and handles errors.
+
+# To run the script, use the following command:
+# python eval2_QA_generation_postprocessing.py \
+#     --input_csv <input_csv> \
+#     --metadata_json <metadata_json> \
+#     --output_json <output_json>

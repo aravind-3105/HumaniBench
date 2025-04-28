@@ -1,6 +1,6 @@
 # Eval 7: Visual QA Robustness Evaluation
 
-This project evaluates Visual Question Answering (VQA) model robustness against different types of image perturbations. It uses multiple open-source models (like Aya Vision 8B, Gemma 3 12B, Llama 3.2 Vision, Phi-4) and OpenAI's batch API for evaluation.
+This task evaluates Visual Question Answering (VQA) model robustness against different types of image perturbations. It uses multiple open-source models (like Aya Vision 8B, Gemma 3 12B, Llama 3.2 Vision, Phi-4) and OpenAI's batch API for evaluation.
 
 # Project Structure
 ```

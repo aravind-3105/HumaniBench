@@ -4,6 +4,7 @@ import pandas as pd
 from datasets import load_dataset
 from PIL import Image
 from tqdm import tqdm
+import argparse
 
 
 def load_huggingface_dataset(dataset_name):
@@ -89,16 +90,23 @@ def save_to_json(output_data, output_json_path):
 
 
 if __name__ == "__main__":
+    # Argument parser for command line arguments
+    parser = argparse.ArgumentParser(description="Process and save images and metadata.")
+    parser.add_argument("--dataset_name", type=str, default="vector-institute/newsmediabias-plus-clean", help="Hugging Face dataset name")
+    parser.add_argument("--metadata_json_path", type=str, required=True, help="Path to the metadata JSON file")
+    parser.add_argument("--output_dir", type=str, required=True, help="Output directory for processed images")
+    parser.add_argument("--output_json_path", type=str, required=True, help="Output path for processed metadata JSON")
+    args = parser.parse_args()
     # Configurations
     # Hugginf Face dataset name
-    dataset_name = "vector-institute/newsmediabias-plus-clean"
+    dataset_name = args.dataset_name
     # Path to the metadata JSON file
-    data_folder = "./../../data"
-    metadata_json_path = os.path.join(data_folder, "eval2_subset_nmb.json")
+    data_folder = os.path.dirname(args.metadata_json_path)
+    metadata_json_path = os.path.join(data_folder, args.metadata_json_path)
     # Output directory for processed images
-    output_dir = os.path.join(data_folder, "eval2_processed_images")
+    output_dir = os.path.join(data_folder, args.output_dir)
     # Output path for processed metadata JSON
-    output_json_path = os.path.join(data_folder, "eval2_processed_metadata.json")
+    output_json_path = os.path.join(data_folder, args.output_json_path)
 
     # Load datasets
     dataset_df = load_huggingface_dataset(dataset_name)
@@ -112,3 +120,13 @@ if __name__ == "__main__":
 
     # Save processed data to JSON
     save_to_json(output_data, output_json_path)
+
+# Note: The script assumes that the images are in PIL format and that the metadata JSON file is structured correctly.
+# Make sure to adjust the paths and dataset names as needed.
+
+# To run the script, use the following command:
+# python eval2_QA_generation_preprocessing.py \
+#     --dataset_name <dataset_name> \
+#     --metadata_json_path <metadata_json_path> \
+#     --output_dir <output_dir> \
+#     --output_json_path <output_json_path>

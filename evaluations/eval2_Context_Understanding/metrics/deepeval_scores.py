@@ -142,3 +142,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     main(args.input, args.output)
+
+# This script is designed to evaluate model responses for bias, toxicity, answer relevancy, and faithfulness using the deepeval library.
+
+# To run the script:
+# python deepeval_scores.py \
+# --input <path_to_input_csv> \
+# --output <path_to_output_csv>
