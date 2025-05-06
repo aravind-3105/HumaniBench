@@ -1,9 +1,9 @@
-# HumaniBench: Evaluations for Human-Centric Multimodal Understanding
+# HumaniBench: A Human-Centric Benchmark for Large Multimodal Models Evaluation
 
 ## Overview
 As multimodal generative AI systems become increasingly integrated into human-centered applications, evaluating their alignment with human values has become critical.
 
-HumaniBench is the first comprehensive human-centric benchmark for evaluating **Multimodal Large Language Models (MLLMs)** across fairness, ethics, perception, multilingual equity, empathy, and robustness.
+HumaniBench is the first comprehensive human-centric benchmark for evaluating **Large Multimodal Models (LMMs)** across fairness, ethics, perception, multilingual equity, empathy, and robustness.
 
 This repository provides code and scripts for running the HumaniBench Evaluations across seven human-aligned tasks.
 
@@ -13,21 +13,22 @@ This repository provides code and scripts for running the HumaniBench Evaluation
 - Open and Closed-Ended Visual QA Formats
 
 - Paper (Preprint)
-- HumaniBench: A Human-Centric Benchmark for Multimodal Large Language Models Evaluation (NeurIPS 2025 under review)
+- HumaniBench: A Human-Centric Benchmark for
+Large Multimodal Models Evaluation (NeurIPS 2025 under review)
 
 
 
 # Evaluation Tasks Overview
 
-| Evaluation | Focus | Folder |
+| Task | Focus | Folder |
 |:---|:---|:---|
-| **Eval 1: Scene Understanding & Social Bias** | Visual reasoning + bias/toxicity analysis in images with social attributes (gender, age, occupation, etc.) | `evaluations/eval1_Scene_Understanding` |
-| **Eval 2: Context Understanding** | Visual reasoning in socially and culturally rich contexts | `evaluations/eval2_Context_Understanding` |
-| **Eval 3: Visual Perception (Multiple Choice QA)** | Attribute recognition via multiple-choice VQA tasks | `evaluations/eval3_Visual_Perception` |
-| **Eval 4: Multilingual Visual QA** | VQA performance across 10+ languages | `evaluations/eval4_Multilingual` |
-| **Eval 5: Visual Grounding** | Localizing social attributes within images (bounding box detection) | `evaluations/eval5_Visual_Grounding` |
-| **Eval 6: Emotion and Empathy (WIP)** | Empathetic captioning and emotional understanding evaluation | `evaluations/eval6_Emotion` |
-| **Eval 7: Robustness Evaluation** | Model resilience under image perturbations (blur, noise, compression) | `evaluations/eval7_Robustness` |
+| **Task 1: Scene Understanding** | Visual reasoning + bias/toxicity analysis in images with social attributes (gender, age, occupation, etc.) | `tasks/task1_Scene_Understanding` |
+| **Task 2: Instance Identity** | Visual reasoning in socially and culturally rich contexts | `tasks/task2_Instance_Identity` |
+| **Task 3: Instance Attribute (Multiple Choice QA)** | Attribute recognition via multiple-choice VQA tasks | `tasks/task3_Instance_Attribute` |
+| **Task 4: Multilingual Visual QA** | VQA performance across 10+ languages | `tasks/task4_Multilingual` |
+| **Task 5: Visual Groundin and Localization** | Localizing social attributes within images (bounding box detection) | `tasks/task5_Visual_Grounding` |
+| **Task 6: Emotion and Human-centered** | Empathetic captioning and emotional understanding evaluation | `tasks/task6_Emotion` |
+| **Task 7: Robustness and Stability Evaluation** | Model resilience under image perturbations (blur, noise, compression) | `tasks/task7_Robustness_and_Stability` |
 
 > Each folder contains its own README with detailed setup, usage instructions, and metrics.
 

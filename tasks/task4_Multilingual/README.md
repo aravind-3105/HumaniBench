@@ -1,4 +1,4 @@
-# Eval 4: Multilingual Visual QA Evaluation
+# Eval 4: Language and Culture - Multilingual Visual QA Evaluation
 
 This task evaluates Visual Question Answering (VQA) models in a multilingual setting, covering both simple QA and multiple-choice QA formats.
 It supports models like Aya Vision 8B, Gemma 3 12B, Llama 3.2 Vision, and Phi-4, with evaluation based on translation quality, reasoning, and multilingual consistency.

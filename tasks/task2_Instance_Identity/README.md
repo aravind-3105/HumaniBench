@@ -1,4 +1,4 @@
-# Eval 2: Context Understanding
+# Eval 2: Instance Identity
 
 This task focuses on evaluating the context understanding capabilities of various models. The evaluation is based on a dataset of images and associated questions, where the models are tasked with generating answers based on the visual content and social context of the images.
 
