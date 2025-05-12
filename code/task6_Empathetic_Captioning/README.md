@@ -1,4 +1,4 @@
-# Eval 6: Emotion and Human-Centere - Empathetic Captioning Evaluation
+# Eval 6: Empathetic Captioning Evaluation
 
 This task evaluates model performance in generating both factual and empathetic captions for empathy-related images.
 It uses multiple open-source models (like Aya Vision 8B, DeepSeek-Vision, Llama 3.2 Vision, Phi-4) and an external linguistic tool (LIWC) for emotion analysis.

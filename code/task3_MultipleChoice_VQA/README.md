@@ -1,4 +1,4 @@
-# Eval 3: Instance Identity - Multiple Choice Visual Question Answering Evaluation
+# Eval 3: Multiple Choice Visual Question Answering
 
 This task evaluates Visual Question Answering (VQA) model performance on multiple-choice questions across several categories (Gender, Age, Occupation, Ethnicity, Sport). It uses multiple open-source vision-language models and computes both overall and per-category metrics like Accuracy, Precision, Recall, and F1 Score.
 
