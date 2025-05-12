@@ -24,11 +24,11 @@ Large Multimodal Models Evaluation (NeurIPS 2025 under review)
 |:---|:---|:---|
 | **Task 1: Scene Understanding** | Visual reasoning + bias/toxicity analysis in images with social attributes (gender, age, occupation, etc.) | `code/task1_Scene_Understanding` |
 | **Task 2: Instance Identity** | Visual reasoning in socially and culturally rich contexts | `code/task2_Instance_Identity` |
-| **Task 3: Multiple Choice QA** | Attribute recognition via multiple-choice VQA tasks | `code/task3_Instance_Attribute` |
+| **Task 3: Multiple Choice QA** | Attribute recognition via multiple-choice VQA tasks | `code/task3_Multiple_Choice_VQA` |
 | **Task 4: Multilingual Visual QA** | VQA performance across 10+ languages | `code/task4_Multilingual` |
 | **Task 5: Visual Grounding** | Localizing social attributes within images (bounding box detection) | `code/task5_Visual_Grounding` |
-| **Task 6: Empathetic Captioning** | Empathetic captioning and emotional understanding evaluation | `code/task6_Emotion` |
-| **Task 7: Image Resilience** | Model resilience under image perturbations (blur, noise, compression) | `code/task7_Robustness_and_Stability` |
+| **Task 6: Empathetic Captioning** | Empathetic captioning and emotional understanding evaluation | `code/task6_Empathetic_Captioning` |
+| **Task 7: Image Resilience** | Model resilience under image perturbations (blur, noise, compression) | `code/task7_Image_Resilience` |
 
 > Each folder contains its own README with detailed setup, usage instructions, and metrics.
 
