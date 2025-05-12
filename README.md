@@ -22,13 +22,13 @@ Large Multimodal Models Evaluation (NeurIPS 2025 under review)
 
 | Task | Focus | Folder |
 |:---|:---|:---|
-| **Task 1: Scene Understanding** | Visual reasoning + bias/toxicity analysis in images with social attributes (gender, age, occupation, etc.) | `tasks/task1_Scene_Understanding` |
-| **Task 2: Instance Identity** | Visual reasoning in socially and culturally rich contexts | `tasks/task2_Instance_Identity` |
-| **Task 3: Instance Attribute (Multiple Choice QA)** | Attribute recognition via multiple-choice VQA tasks | `tasks/task3_Instance_Attribute` |
-| **Task 4: Multilingual Visual QA** | VQA performance across 10+ languages | `tasks/task4_Multilingual` |
-| **Task 5: Visual Groundin and Localization** | Localizing social attributes within images (bounding box detection) | `tasks/task5_Visual_Grounding` |
-| **Task 6: Emotion and Human-centered** | Empathetic captioning and emotional understanding evaluation | `tasks/task6_Emotion` |
-| **Task 7: Robustness and Stability Evaluation** | Model resilience under image perturbations (blur, noise, compression) | `tasks/task7_Robustness_and_Stability` |
+| **Task 1: Scene Understanding** | Visual reasoning + bias/toxicity analysis in images with social attributes (gender, age, occupation, etc.) | `code/task1_Scene_Understanding` |
+| **Task 2: Instance Identity** | Visual reasoning in socially and culturally rich contexts | `code/task2_Instance_Identity` |
+| **Task 3: Instance Attribute (Multiple Choice QA)** | Attribute recognition via multiple-choice VQA tasks | `code/task3_Instance_Attribute` |
+| **Task 4: Multilingual Visual QA** | VQA performance across 10+ languages | `code/task4_Multilingual` |
+| **Task 5: Visual Groundin and Localization** | Localizing social attributes within images (bounding box detection) | `code/task5_Visual_Grounding` |
+| **Task 6: Emotion and Human-centered** | Empathetic captioning and emotional understanding evaluation | `code/task6_Emotion` |
+| **Task 7: Robustness and Stability Evaluation** | Model resilience under image perturbations (blur, noise, compression) | `code/task7_Robustness_and_Stability` |
 
 > Each folder contains its own README with detailed setup, usage instructions, and metrics.
 
