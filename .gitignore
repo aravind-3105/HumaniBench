@@ -218,3 +218,6 @@ cython_debug/
 !docs/static/images/*.csv
 !docs/static/images/*.xls
 !docs/static/images/*.xlsx
+
+# Add .DS_Store to the ignore list
+.DS_Store
