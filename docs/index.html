@@ -78,7 +78,7 @@
               <!-- <u>D</u>isinformation Detection <u>Bench</u>mark -->
             <img src="./static/images/HumaniBenchLogo.ico" alt="HumaniBench Logo" style="max-height: 150px; margin-bottom: 10px;">
             <h1 class="title is-2 publication-title">
-              <span style="font-weight: 900;">HumaniBench</span>: A Benchmark for Human-Centric Alignment in Multimodal Large Language Models
+              <span style="font-weight: 900;">HumaniBench</span>: A Human-Centric Benchmark for Large Multimodal Models Evaluation
             </h1>
             
             
@@ -114,7 +114,7 @@
                 </span>
                 </span>
                 <span class="link-block">
-                  <a href="#" target="_blank"
+                  <a href="https://huggingface.co/datasets/vector-institute/HumaniBench" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fas fa-database"></i>
@@ -152,7 +152,7 @@
     <div class="container is-max-desktop">
       <div class="hero-body">
         <p align="justify"><br>
-          <strong>HumaniBench</strong> is the first comprehensive benchmark designed to evaluate <em>large multimodal models (LMMs)</em> on key human-centered principles such as <strong>fairness</strong>, <strong>ethical compliance</strong>, <strong>empathy</strong>, <strong>multilingual equity</strong>, <strong>robustness</strong>, and <strong>perceptual honesty</strong>. Built on <strong>32,000 real-world image–question pairs</strong> across seven diverse tasks, HumaniBench goes beyond standard accuracy metrics to probe how well models align with human needs, values, and expectations. By providing a rigorous, expert-verified evaluation framework, HumaniBench aims to guide the development of LMMs that are not only <em>powerful</em> and <em>versatile</em> but also <strong>ethical</strong>, <strong>inclusive</strong>, and <strong>trustworthy</strong> in real-world applications.</p>
+          <strong>HumaniBench</strong> is the first comprehensive benchmark designed to evaluate <em>large multimodal models (LMMs)</em> on key human-centered principles such as <strong>fairness</strong>, <strong>ethics</strong>, <strong>understanding</strong>, <strong>reasoning</strong>, <strong>language</strong>, <strong>inclusivity</strong>, <strong>empathy</strong> and <strong>robustness</strong>. Built on <strong>32,000 real-world image–question pairs</strong> across seven diverse tasks, HumaniBench goes beyond standard accuracy metrics to probe how well models align with human needs, values, and expectations. By providing a rigorous, expert-verified evaluation framework, HumaniBench aims to guide the development of LMMs that are not only <em>powerful</em> and <em>versatile</em> but also <strong>ethical</strong>, <strong>inclusive</strong>, and <strong>trustworthy</strong> in real-world applications.</p>
         <!-- <br> -->
 
         <div class="column">
@@ -160,7 +160,7 @@
             <img src="static/images/HumaniBenchTeaser.jpg" style="max-width:100%">
             <div class="content has-text-justified">
               <p align="justify"> <b> <span>Figure</span></b>:
-                The infographic shows the end-to-end pipeline—AI-assisted annotation followed by domain-expert verification—that produces seven vision-language tasks (T1–T7). Each task example is paired with a representative prompt-answer, all anchored to the benchmark’s seven human-centric principles: <i>Fairness, Ethical Compliance, Multilingual Equity, Perceptual Honesty, Empathy, Robustness, and Contextual Reasoning</i>. The bottom panel lists the evaluation toolbox combining LLM judges,  metrics, and scoring critera. 
+                This figure shows AI-assisted annotation of the HumaniBench dataset followed by domain-expert verification (top). The benchmark  has both open-ended and closed VQA setting and includes seven multimodal tasks (T1–T7). There are seven human-centric principle defined and each task is associated with one or more human-aligned principles (center). Task examples include VQA across modalities and languages. The bottom panel presents the evaluation scheme comprising LLM-based judgments, and standard metrics as needed by the specific task.
               </p>
             </div>
           </div>
@@ -179,7 +179,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Large Multimodal Models (LMMs) have achieved impressive capabilities in vision and language understanding, however they often struggle on human-centered criteria such as <strong>fairness</strong>, <strong>ethical compliance</strong>, <strong>personalization</strong>, and <strong>perceptual accuracy</strong> — meaning their alignment with real-world human needs, values, and expectations. We introduce a <strong>novel benchmark dataset</strong> explicitly designed to evaluate and guide LMMs toward more <em>human-aligned behavior</em>. Specifically, we assess models' ability to avoid <strong>harmful biases</strong>, ethically handle sensitive content, adapt outputs to user contexts, and maintain <em>human-like perceptual honesty</em> and <em>uncertainty handling</em>. We outline rigorous evaluation protocols that go beyond accuracy, measuring <strong>bias</strong>, <strong>trustworthiness</strong>, and <strong>user-centric performance</strong>. Baseline experiments with state-of-the-art LMMs (open-source and proprietary) reveal significant gaps: models show performance at core vision-language tasks but still exhibit notable <strong>biases</strong> and <strong>consistency issues</strong> in human-centric scenarios. By highlighting these limitations, our benchmark provides a tool for the community to develop and validate LMMs that are not only intelligent, but also <em>ethical</em>, <em>fair</em>, and <em>aligned with human perception and preferences</em>. <br>
+            Large Multimodal Models (LMMs) perform exceptional at vision-language tasks but still face challenges in human-centered criteria such as fairness, ethics, empathy,  and inclusivity, principles essential for true alignment with human values. We introduce <strong>HumaniBench</strong>, a benchmark comprising approximately 32 K image–question pairs from real-world imagery, annotated via a scalable GPT-4o-assisted pipeline and rigorously verified by domain experts. HumaniBench evaluates models across seven human-aligned principles—<i>fairness, ethics, understanding, reasoning, language inclusivity, empathy, and robustness</i>—covering diverse tasks that include both open- and closed-ended visual question answering (VQA). Benchmarking 15 state-of-the-art LMMs (open- and closed-source) reveals that proprietary models generally lead; however, significant gaps remain in robustness and visual grounding, while open-source models struggle to balance accuracy with adherence to human-aligned principles such as ethics and inclusivity. HumaniBench is the first unified, real-world benchmark explicitly designed around Human-Centered AI principles, providing a rigorous testbed to diagnose alignment issues and guide models toward behavior that is accurate, ethical, inclusive, and socially responsible. To promote transparency and foster future research, we publicly release the full dataset and evaluation code.<br>
           </p>
         </div>
       </div>
@@ -199,7 +199,7 @@
           <h2 class="title is-3"><em>HumaniBench</em> is the first evaluation framework to unify these human-centric principles—such as fairness, ethics, empathy, and multilingual understanding—into a single suite.</h2>
 
 
-          <div class="content has-text-justified">
+          <!-- <div class="content has-text-justified">
             <p>
             <h5> <b> Main contributions: </b></h5>
             <ol>
@@ -213,7 +213,7 @@
 
             </ol>
             </p>
-          </div>
+          </div> -->
         </div>
       </div>
       
@@ -260,7 +260,7 @@
 
             <div class="content has-text-justified">
               <p align="justify"> 
-                The HumaniBench dataset was curated by starting with ~30,000 real-world news images (mainly from VLDBench) and adding ~600 bias-focused images from SB-Bench, all non-synthetic. Near-duplicate images were filtered using a CLIP embedding similarity threshold (>95%), resulting in ~13,000 unique images. Using GPT-4o, each image was assigned concise captions, scene descriptions, and five social-attribute tags (age, gender, race, occupation, sports). Domain experts then verified and refined the annotations and removed any NSFW content. The final HumaniBench dataset contains ~32,000 high-quality image–text pairs designed for social bias and perception benchmarking. <!-- Add link --> The datasheet for the final HumaniBench dataset can be found <a href="#" target="_blank">here</a>.
+                The datasheet for the final HumaniBench dataset can be found <a href="#" target="_blank">here</a>.
               </p>
           </div>
 
@@ -317,7 +317,7 @@
       </div>
       <br><br>
       <div class="content has-text-centered">
-        <h3 class="title is-4 has-text-justified">Multimodal Models under Evaluation</h3>
+        <h3 class="title is-4 has-text-justified">Large Multimodal Systems under Evaluation</h3>
         <div class="content has-text-justified">
           <p align="justify"> For HumaniBench, we evaluate thirteen state-of-the-art open-source Large Multimodal Models (LMMs) across diverse human-alignment tasks. These models represent a range of vision encoders, language backbones, and fusion techniques. By focusing exclusively on vision-language models, HumaniBench provides a rigorous testbed for assessing human-centered reasoning, fairness, empathy, and robustness in real-world multimodal scenarios. </p>
           <!-- I want width to be 80% center aligned-->
@@ -378,9 +378,6 @@
               <img src="static/images/HumaniBenchOverviewScores.jpg" style="max-width:80%">
               <p class="content has-text-justified"><b> <span>Figure</span></b>: HumaniBench principle-aligned scores. Values are the mean performance of each model on the tasks [T1–T7] mapped to a given principle (↑ higher is better, ↓ lower is better). †Closed-source model; all remaining models are open source.</p>
             </div>
-            <p style="text-align: justify;">
-              HumaniBench evaluations reveal that <strong>closed-source models</strong> like GPT-4o and Gemini-2.0 consistently achieve top scores across key human-aligned principles, including fairness, ethical compliance, multilingual equity, and empathy, thanks to advanced safety alignment and reinforcement learning techniques. However, several <strong>open-source models</strong> show competitive strengths — for example, <em>Qwen2.5 excels in perceptual honesty</em>, and <em>CogVLM2 leads in robustness</em> due to specialized stabilization strategies. While open models are making progress in perception, reasoning, and robustness, they still lag behind in <strong>affective alignment</strong>, <strong>ethical safeguards</strong>, and <strong>multilingual performance</strong>, highlighting both the advances and ongoing challenges in open-source AI development.
-            </p>
 
           </div>
 
@@ -395,7 +392,7 @@
 
           <h2 class="title is-3">Empirical and Qualitative Results</h2>
 
-          <h3 class="title is-4 has-text-justified">1. Balancing Accuracy, Fairness, and Human-Centric Principles</h3>
+          <!-- <h3 class="title is-4 has-text-justified">1. Balancing Accuracy, Fairness, and Human-Centric Principles</h3> -->
           <div class="content has-text-centered">
             <div class="content has-text-centered">
               <img src="static/images/HumaniBenchT1-T3.jpg" style="max-width:80%">
@@ -403,18 +400,18 @@
             </div>
 
 
-            <p style="text-align: justify;">
-              While many open-source models show a trade-off between accuracy and fairness, top closed-source models (GPT-4o, Gemini-2.0) and Phi-4 demonstrate that careful data curation and fine-tuning can balance both. However, no model leads across faithfulness, contextual relevance, and coherence at the same time, underlining the need for multi-objective optimization to align competing human-centric goals.</p>
+            <!-- <p style="text-align: justify;">
+              While many open-source models show a trade-off between accuracy and fairness, top closed-source models (GPT-4o, Gemini-2.0) and Phi-4 demonstrate that careful data curation and fine-tuning can balance both. However, no model leads across faithfulness, contextual relevance, and coherence at the same time, underlining the need for multi-objective optimization to align competing human-centric goals.</p> -->
           </div>
 
-          <h3 class="title is-4 has-text-justified">2. Race and Gender Remains the Most Challenging</h3>
-          <div class="content has-text-centered">
+          <!-- <h3 class="title is-4 has-text-justified">2. Race and Gender Remains the Most Challenging</h3> -->
+          <!-- <div class="content has-text-centered">
             <p style="text-align: justify;">
               Across tasks, models show the highest bias and lowest accuracy on race and gender attributes, making these demographics the most challenging for fair and accurate analysis. Age and sports attributes perform more evenly, while occupation also shows notable bias, pointing to the need for targeted mitigation in sensitive areas.</p>
-          </div>
+          </div> -->
 
           <!-- <br /> -->
-          <h3 class="title is-4 has-text-justified">3. Multilingual Gaps Persist Across Models</h3>
+          <!-- <h3 class="title is-4 has-text-justified">3. Multilingual Gaps Persist Across Models</h3> -->
           <div class="content has-text-centered">
             <div class="content has-text-centered">
               <img src="static/images/HumaniBenchMultilingual.jpg" style="max-width:80%">
@@ -422,7 +419,7 @@
             </div>
 
             <p style="text-align: justify;">
-              HumaniBench conducts multilingual evaluations across both open-ended and closed-ended tasks to assess disparities in accuracy and bias. By comparing performance on a mix of high-resource and low-resource languages, we observe that while high-resource languages show more consistent results, persistent gaps remain in low-resource language support. These findings underscore the ongoing challenges in achieving fair and equitable multilingual alignment.</p>
+              <!-- HumaniBench conducts multilingual evaluations across both open-ended and closed-ended tasks to assess disparities in accuracy and bias. By comparing performance on a mix of high-resource and low-resource languages, we observe that while high-resource languages show more consistent results, persistent gaps remain in low-resource language support. These findings underscore the ongoing challenges in achieving fair and equitable multilingual alignment.</p> -->
               <table style="width:60%; margin: 0 auto; border-collapse: collapse; font-family: sans-serif;">
                 <thead style="background-color: #f2f2f2;">
                   <tr>
@@ -458,13 +455,13 @@
               </table>
           </div>
 
-          <h3 class="title is-4 has-text-justified">4. Weakly Supervised Localization Remains Challenging for LMMs</h3>
+          <!-- <h3 class="title is-4 has-text-justified">4. Weakly Supervised Localization Remains Challenging for LMMs</h3>
           <div class="content has-text-centered">
             <p style="text-align: justify;">
               Visual grounding tasks remain difficult, with some open-source models (Qwen-7B, LLaVA-v1.6) surprisingly outperforming closed-source systems like GPT-4o in precise localization. This suggests that open models currently hold an edge in certain specialized visual tasks.</p>
-          </div>
+          </div> -->
 
-          <h3 class="title is-4 has-text-justified">5. Closed-Source LMMs Exhibit Higher Empathy in Generated Captions</h3>
+          <!-- <h3 class="title is-4 has-text-justified">5. Closed-Source LMMs Exhibit Higher Empathy in Generated Captions</h3> -->
           <div class="content has-text-centered">
             <div class="content has-text-centered">
               <img src="static/images/HumaniBenchEmpathy.jpg" style="max-width:80%">
@@ -472,13 +469,13 @@
             </div>
 
 
-            <p style="text-align: justify;">
-              Closed models like GPT-4o and Gemini 2.0 consistently produce genuinely empathetic captions that acknowledge emotional nuance and offer supportive interpretations. In contrast, most open-source models, such as Aya Vision and Phi-4, tend to default to literal or surface-level descriptions, revealing a clear empathy-tone gap. These differences highlight the strengths of closed models in human-centric alignment and the ongoing challenge of improving affective understanding in open models. The above figure also illustrates how models handle empathy in image captioning, comparing simple (analytic) and empathic (emotionally aware) styles.</p>
+            <!-- <p style="text-align: justify;">
+              Closed models like GPT-4o and Gemini 2.0 consistently produce genuinely empathetic captions that acknowledge emotional nuance and offer supportive interpretations. In contrast, most open-source models, such as Aya Vision and Phi-4, tend to default to literal or surface-level descriptions, revealing a clear empathy-tone gap. These differences highlight the strengths of closed models in human-centric alignment and the ongoing challenge of improving affective understanding in open models. The above figure also illustrates how models handle empathy in image captioning, comparing simple (analytic) and empathic (emotionally aware) styles.</p> -->
           </div>
 
           
 
-          <h3 class="title is-4 has-text-justified">6. Robustness is Limited Under Real-World Perturbations</h3>
+          <!-- <h3 class="title is-4 has-text-justified">6. Robustness is Limited Under Real-World Perturbations</h3>
           <div class="content has-text-centered">
             <p style="text-align: justify;">
               No model fully withstands real-world perturbations, though Gemini-2.0 and some robustness-tuned open models like InternVL and CogVLM show relatively better resilience. Many models, however, experience steep performance drops under such conditions, underscoring ongoing robustness challenges.
@@ -501,22 +498,22 @@
               Scaling up model size improves scene understanding performance across LMM families. Larger variants of GPT-4o, LLaVA-v1.6, Qwen2.5-VL, and LLaMA-3.2 consistently outperform smaller ones, with gains of 5–11%, highlighting the benefits of enhanced visual-textual alignment and broader knowledge capacity.
             </p>
 
-          </div>
+          </div> -->
 
         </div>
       </div>
 
-      <div class="content has-text-justified">
+      <!-- <div class="content has-text-justified"> -->
         <!-- Center align  -->
-        <div class="column is-full-width has-text-centered">
+        <!-- <div class="column is-full-width has-text-centered">
           <h2 class="title is-3">Social Impact</h2>
-        </div>
+        </div> -->
         <!-- <h2 class="title is-4 has-text-centered">Conclusion</h2> -->
-        <div class="content has-text-justified">
+        <!-- <div class="content has-text-justified">
           <p>
             HumaniBench highlights both the potential and the societal risks of LMMs, revealing persistent issues like stereotyping, marginalization of low-resource languages, emotional misinterpretation, and hallucinations that could amplify bias or misinformation in critical domains. It also shows that safety filters can obscure important content, reducing transparency. Given the sensitive nature of its real-world data, HumaniBench use requires strong governance, bias audits, and human oversight to drive progress toward inclusive, trustworthy AI rather than endorsing partial solutions.</p>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
 
       <div class="content has-text-justified">
         <!-- Center align  -->
