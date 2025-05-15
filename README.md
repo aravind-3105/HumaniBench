@@ -73,7 +73,7 @@ Coming soon
 
 # Contact
 
-For questions, collaborations, or dataset access requests, please open an issue in this repository or contact the corresponding authors listed in the paper.
+For questions, collaborations, or dataset access requests, please [open an issue](https://github.com/VectorInstitute/HumaniBench/issues) in this repository or contact the corresponding author at [shaina.raza@vectorinstitute.ai](mailto:shaina.raza@torontomu.ca), as listed in the paper.
 
 
 ---
