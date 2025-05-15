@@ -96,7 +96,7 @@ If you use HumaniBench or this evaluation suite in your work, please cite:
   title     = {HumaniBench: A Human-Centric Framework for Large Multimodal Models Evaluation},
   author    = {Shaina Raza and Aravind Narayanan and Vahid Reza Khazaie and Ashmal Vayani and Mukund S. Chettiar and Amandeep Singh and Mubarak Shah and Deval Pandya},
   year      = {2025},
-  institution = {Vector Institute and University of Central Florida},
+  institution = {Vector Institute},
   note      = {Under review}
 }
 
