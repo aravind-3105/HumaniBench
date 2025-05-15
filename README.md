@@ -1,4 +1,11 @@
 # HumaniBench: A Human-Centric Benchmark for Large Multimodal Models Evaluation
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ebed8e26-5bdf-48c1-ae41-0775b8c33c0a" alt="HumaniBench Logo" width="300"/>
+</p>
+
+<p align="center">
+  <b>Dataset:</b> <a href="https://huggingface.co/datasets/vector-institute/HumaniBench">vector-institute/HumaniBench</a>
+</p>
 
 ## Overview
 As multimodal generative AI systems become increasingly integrated into human-centered applications, evaluating their alignment with human values has become critical.
