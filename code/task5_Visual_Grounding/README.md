@@ -55,7 +55,17 @@ Evaluates multi-object detection (e.g. LLaVA/DeepSeek formats)
 # How to Run
 
 ## 1. (Optional) Data Preparation
-(Placeholder: To be added in the future.)
+```bash
+python annotate-with-yolo.py \
+  --image_dir images \
+  --output_json yolo_detections.json \
+  --num_images 1000 \
+  --yolo_model yolov8n.pt \
+  --confidence 0.5 \
+  --visualize \
+  --hf_token <your_huggingface_token>
+
+```
 
 ## 2. Run Inference on Models
 Example for Aya Vision 8B:
