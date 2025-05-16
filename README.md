@@ -36,7 +36,7 @@ This repository provides code and scripts for evaluating LMMs across **7 human-a
 * 🧠 **Open and Closed-Ended VQA Formats**
 * 🧪 **Visual Robustness & Bias Stress Testing**
 * 📑 **Chain-of-Thought Reasoning + Perceptual Grounding**
-* 📄 **Paper (Preprint)**: *HumaniBench: A Human-Centric Benchmark for Large Multimodal Models Evaluation* (NeurIPS 2025 under review)
+
 
 ---
 
